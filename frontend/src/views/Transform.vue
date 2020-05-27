@@ -56,7 +56,7 @@ export default {
 
         this.message = validateTB(workbook);
         if (!this.message) {
-          // const data = parse(workbook, SHEET_NAME[196000])
+          const data = parse(workbook, SHEET_NAME[196000])
           // const tempWrokSheet = loadTemplate(196000)
           // const workbook = fillData(tempWrokSheet, data);
           this.files = [{

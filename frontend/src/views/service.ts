@@ -15,6 +15,11 @@ export function validateTB(workbook: Workbook) {
 }
 
 export function parse(workbook: Workbook, sheetName: string){
+    const worksheet = workbook.getWorksheet(sheetName);
+    if(worksheet){
+        console.log(worksheet.getColumn("C"));
+        return worksheet.getColumn("C");
+    }
     return {};
 }
 
