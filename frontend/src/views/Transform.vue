@@ -12,7 +12,9 @@
     <h1 class="slogan">Smart <strong>Excel</strong> Transform</h1>
     <ul class="results">
       <li v-for="file in files" :key="file.key">
-        <a href="javascript:void(0);" v-on:click="download(file.key)">{{file.key}}</a>
+        <a href="javascript:void(0);" v-on:click="download(file.key)">{{
+          file.key
+        }}</a>
       </li>
     </ul>
   </div>
@@ -21,28 +23,35 @@
 <script>
 import * as Excel from "exceljs";
 import { saveAs } from "file-saver";
-import { write, validateTB, loadTemplate, SHEET_NAME, parse, fillData } from "./service";
+import {
+  write,
+  validateTB,
+  loadTemplate,
+  SHEET_NAME,
+  parse,
+  fillData
+} from "./service";
 
 export default {
   name: "Transform",
   data() {
     return {
       message: "",
-      files: [],
+      files: []
     };
   },
   methods: {
-    async download(key){
-      console.log('files', this.files);
-        const workbook = this.files.filter(f => f.key === key)[0].workbook;
-        const buffer = await workbook.xlsx.writeBuffer();
-        const fileType =
-          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-        const fileExtension = ".xlsx";
+    async download(key) {
+      console.log("files", this.files);
+      const workbook = this.files.filter(f => f.key === key)[0].workbook;
+      const buffer = await workbook.xlsx.writeBuffer();
+      const fileType =
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+      const fileExtension = ".xlsx";
 
-        const blob = new Blob([buffer], { type: fileType });
+      const blob = new Blob([buffer], { type: fileType });
 
-        saveAs(blob, "Sample" + fileExtension);
+      saveAs(blob, "Sample" + fileExtension);
     },
     handleFileUpload() {
       this.message = "";
@@ -51,19 +60,18 @@ export default {
       reader.onload = async () => {
         const workbook = new Excel.Workbook();
         await workbook.xlsx.load(reader.result);
-
-        console.log(workbook);
-
         this.message = validateTB(workbook);
         if (!this.message) {
-          const data = parse(workbook, SHEET_NAME[196000])
-          // const tempWrokSheet = loadTemplate(196000)
+          const targetValue = parse(workbook, SHEET_NAME._196000);
+          const tempalte = await loadTemplate(SHEET_NAME._196000)
           // const workbook = fillData(tempWrokSheet, data);
-          this.files = [{
-            key: SHEET_NAME[196000],
-            workbook,
-          }];
-          console.log('files', this.files);
+          this.files = [
+            {
+              key: SHEET_NAME[196000],
+              workbook
+            }
+          ];
+          console.log("files", this.files);
         }
       };
       reader.readAsArrayBuffer(file);
@@ -112,7 +120,7 @@ export default {
     font-weight: 600;
   }
 }
-.results{
+.results {
   margin-top: 20px;
 }
 </style>

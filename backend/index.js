@@ -6,14 +6,21 @@ const fs = require('fs');
 const stream = require('stream');
 
 const app = express();
+
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
 
+app.use('/static', express.static(__dirname +'/template'))
+
+
+// app.get('/template', (req,res) => {
+
+// })
 app.get('/index', (req, res) => {
-  res.sendFile(path.join(__dirname + '/../frontend/index.html'));
+  res.sendFile(path.join(__dirname + '/../frontend/dist/index.html'));
 });
 
 app.post('/api/upload', (req, res, next) => {
