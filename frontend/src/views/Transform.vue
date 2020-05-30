@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <h1 class="message">{{ message }}</h1>
+    <h1 v-if="!!message" class="message">{{ message }}</h1>
     <input
       type="file"
       id="file"
@@ -9,14 +9,20 @@
       class="inputfile"
     />
     <label for="file">Choose a file</label>
-    <h1 class="slogan">Smart <strong>Excel</strong> Transform</h1>
+    <button v-if="!!files.length" class="downloadAll">download all</button>
     <ul class="results">
       <li v-for="file in files" :key="file.key">
-        <a href="javascript:void(0);" v-on:click="download(file.key)">{{
-          file.key
-        }}</a>
+        <span>{{ file.name }}</span>
+        <span class="status-success">success</span>
+        <a
+          href="javascript:void(0);"
+          class="download"
+          v-on:click="download(file.key)"
+          >download</a
+        >
       </li>
     </ul>
+    <h1 class="slogan">Smart <strong>Excel</strong> Transform</h1>
   </div>
 </template>
 
@@ -24,7 +30,7 @@
 import * as Excel from "exceljs";
 import { saveAs } from "file-saver";
 import { validateTB, loadTemplate, SHEET_NAME, fillData } from "./service";
-import {isXlsx} from "@/util/file";
+import { isXlsx } from "@/util/file";
 
 export default {
   name: "Transform",
@@ -42,9 +48,8 @@ export default {
       const buffer = await workbook.xlsx.writeBuffer();
       const fileType =
         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-      const fileExtension = ".xlsx";
       const blob = new Blob([buffer], { type: fileType });
-      saveAs(blob, `${file.name + fileExtension}`);
+      saveAs(blob, file.name);
     },
     handleFileUpload() {
       this.message = "";
@@ -65,18 +70,19 @@ export default {
           this.files = [
             {
               key: SHEET_NAME._196000,
-              name: `202004-CNCDU-${SHEET_NAME._196000}`,
-              workbook: resultWrokbook
+              name: `202004-CNCDU-${SHEET_NAME._196000}.xlsx`,
+              workbook: resultWrokbook,
+              buffer: resultWrokbook.xlsx.writeBuffer()
             }
           ];
           console.log("parsing success", this.files);
         }
         this.isLoading = false;
       };
-      if(isXlsx(file.name)){
+      if (isXlsx(file.name)) {
         reader.readAsArrayBuffer(file);
       } else {
-        this.message = "File type is not supported"
+        this.message = "File type is not supported";
         this.isLoading = false;
       }
     }
@@ -108,6 +114,7 @@ export default {
   background-color: rgb(50, 49, 49);
   display: inline-block;
   padding: 0.4em;
+  border-radius: 3px;
 }
 
 .inputfile:focus + label,
@@ -118,16 +125,49 @@ export default {
   cursor: pointer;
 }
 .slogan {
-  margin-top: 40px;
   font-size: 44px;
+  margin-top: 24px;
   strong {
     font-weight: 600;
   }
 }
+.downloadAll {
+  border-radius: 3px;
+  margin-top: 12px;
+  background-color: #02c487;
+  padding: 5px 8px;
+  font-size: 16px;
+  color: white;
+  font-weight: 600;
+}
 .results {
   margin-top: 20px;
+  li {
+    padding: 8px;
+    background-color: white;
+    border: 1px solid gray;
+    span {
+      color: #2d3e50;
+      text-decoration: none;
+      margin-right: 16px;
+    }
+    .status-success {
+      background-color: #49cb90;
+      color: white;
+      border-radius: 3px;
+      padding: 1px 5px;
+    }
+    .download {
+      color: #42b983;
+    }
+  }
 }
 .message {
   margin-bottom: 25px;
+  padding: 8px;
+  border: 1px solid #ffccc7;
+  background-color: #fff2f0;
+  color: black;
+  border-radius: 3px;
 }
 </style>

@@ -12,5 +12,5 @@ describe("file util", () => {
     expect(isXlsx("有用的.json")).toBe(false);
     expect(isXlsx("2020-04-25.json")).toBe(false);
     expect(isXlsx("xxxx")).toBe(false);
-  })
+  });
 });
