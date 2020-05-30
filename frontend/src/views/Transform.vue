@@ -23,14 +23,7 @@
 <script>
 import * as Excel from "exceljs";
 import { saveAs } from "file-saver";
-import {
-  write,
-  validateTB,
-  loadTemplate,
-  SHEET_NAME,
-  parse,
-  fillData
-} from "./service";
+import { validateTB, loadTemplate, SHEET_NAME, fillData } from "./service";
 
 export default {
   name: "Transform",
@@ -43,7 +36,8 @@ export default {
   methods: {
     async download(key) {
       console.log("files", this.files);
-      const workbook = this.files.filter(f => f.key === key)[0].workbook;
+      const file = this.files.filter(f => f.key === key)[0];
+      const workbook = file.workbook;
       const buffer = await workbook.xlsx.writeBuffer();
       const fileType =
         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
@@ -51,7 +45,7 @@ export default {
 
       const blob = new Blob([buffer], { type: fileType });
 
-      saveAs(blob, "Sample" + fileExtension);
+      saveAs(blob, `${file.name + fileExtension}`);
     },
     handleFileUpload() {
       this.message = "";
@@ -62,12 +56,16 @@ export default {
         await fromWorkBook.xlsx.load(reader.result);
         this.message = validateTB(fromWorkBook);
         if (!this.message) {
-          // const fromWorkBook = parse(targetWrokbook, SHEET_NAME._196000);
-          const toWorkbook = await loadTemplate(SHEET_NAME._196000)
-          const resultWrokbook = fillData(fromWorkBook, toWorkbook, SHEET_NAME._196000);
+          const toWorkbook = await loadTemplate(SHEET_NAME._196000);
+          const resultWrokbook = fillData(
+            fromWorkBook,
+            toWorkbook,
+            SHEET_NAME._196000
+          );
           this.files = [
             {
               key: SHEET_NAME._196000,
+              name: `202004-CNCDU-${SHEET_NAME._196000}`,
               workbook: resultWrokbook
             }
           ];
