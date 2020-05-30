@@ -58,17 +58,17 @@ export default {
       const file = this.$refs.file.files[0];
       const reader = new FileReader();
       reader.onload = async () => {
-        const workbook = new Excel.Workbook();
-        await workbook.xlsx.load(reader.result);
-        this.message = validateTB(workbook);
+        const fromWorkBook = new Excel.Workbook();
+        await fromWorkBook.xlsx.load(reader.result);
+        this.message = validateTB(fromWorkBook);
         if (!this.message) {
-          const targetValue = parse(workbook, SHEET_NAME._196000);
-          const tempalte = await loadTemplate(SHEET_NAME._196000)
-          // const workbook = fillData(tempWrokSheet, data);
+          // const fromWorkBook = parse(targetWrokbook, SHEET_NAME._196000);
+          const toWorkbook = await loadTemplate(SHEET_NAME._196000)
+          const resultWrokbook = fillData(fromWorkBook, toWorkbook, SHEET_NAME._196000);
           this.files = [
             {
-              key: SHEET_NAME[196000],
-              workbook
+              key: SHEET_NAME._196000,
+              workbook: resultWrokbook
             }
           ];
           console.log("files", this.files);

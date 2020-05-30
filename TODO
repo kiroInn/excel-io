@@ -8,5 +8,6 @@ Todo:
   ✔ 验证是否为excel文件 @done(20-05-28 12:08)
   ✔ 读取解析tb-196000数据源 @started(20-05-27 00:53) @done(20-05-28 23:34) @lasted(1d22h41m55s)
   ✔ 读取tb-196000模板数据 @started(20-05-28 23:35) @done(20-05-29 00:32) @lasted(57m41s)
-  ☐ 填充tb-196000数据
+  ✔ 填充tb-196000值类型数据 @started(20-05-30 10:31) @done(20-05-30 15:06) @lasted(4h35m13s)
+  ✔ 填充tb-196000图片类型数据 @started(20-05-30 10:31) @done(20-05-30 15:06) @lasted(4h35m14s)
   ☐ vue test import excel @started(20-05-28 21:38)
