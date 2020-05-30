@@ -24,31 +24,31 @@
 import * as Excel from "exceljs";
 import { saveAs } from "file-saver";
 import { validateTB, loadTemplate, SHEET_NAME, fillData } from "./service";
+import {isXlsx} from "@/util/file";
 
 export default {
   name: "Transform",
   data() {
     return {
       message: "",
+      isLoading: false,
       files: []
     };
   },
   methods: {
     async download(key) {
-      console.log("files", this.files);
       const file = this.files.filter(f => f.key === key)[0];
       const workbook = file.workbook;
       const buffer = await workbook.xlsx.writeBuffer();
       const fileType =
         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
       const fileExtension = ".xlsx";
-
       const blob = new Blob([buffer], { type: fileType });
-
       saveAs(blob, `${file.name + fileExtension}`);
     },
     handleFileUpload() {
       this.message = "";
+      this.isLoading = true;
       const file = this.$refs.file.files[0];
       const reader = new FileReader();
       reader.onload = async () => {
@@ -69,10 +69,16 @@ export default {
               workbook: resultWrokbook
             }
           ];
-          console.log("files", this.files);
+          console.log("parsing success", this.files);
         }
+        this.isLoading = false;
       };
-      reader.readAsArrayBuffer(file);
+      if(isXlsx(file.name)){
+        reader.readAsArrayBuffer(file);
+      } else {
+        this.message = "File type is not supported"
+        this.isLoading = false;
+      }
     }
   }
 };
@@ -120,5 +126,8 @@ export default {
 }
 .results {
   margin-top: 20px;
+}
+.message {
+  margin-bottom: 25px;
 }
 </style>
