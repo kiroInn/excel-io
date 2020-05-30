@@ -1,10 +1,13 @@
 import Excel from "exceljs";
+import moment from "moment";
+
 export const SHEET_NAME = {
   _196000: "196000"
 };
 
 const CELL_VALUE_TYPE = {
   IMAGE: "image",
+  DATE: "date",
   VALUE: "value"
 };
 
@@ -12,7 +15,7 @@ const CONVERSION_RELATIONS = {
   [SHEET_NAME._196000]: {
     "196000": [
       { from: "C6", to: "C8" },
-      { from: "A3", to: "A3" }
+      { from: "A3", to: "A4", type: CELL_VALUE_TYPE.DATE }
     ],
     TB: [
       { from: "C6", to: "C6" },
@@ -62,11 +65,10 @@ export function fillData(
   to: Excel.Workbook,
   sheetName: string
 ) {
-  const resultMeta = CONVERSION_RELATIONS[sheetName];
+  const conversionRelation = CONVERSION_RELATIONS[sheetName];
   const fromWorkSheet = from.getWorksheet(sheetName);
-  Object.keys(resultMeta).forEach(rsn => {
-    console.log(rsn);
-    const sheetMetaArray = resultMeta[rsn];
+  Object.keys(conversionRelation).forEach(rsn => {
+    const sheetMetaArray = conversionRelation[rsn];
     const toWorkSheet = to.getWorksheet(rsn);
     sheetMetaArray.forEach((meta: any) => {
       if (meta.type === CELL_VALUE_TYPE.IMAGE) {
@@ -76,6 +78,11 @@ export function fillData(
           extension: "png"
         });
         toWorkSheet.addImage(imageId, meta.range);
+      } else if (meta.type === CELL_VALUE_TYPE.DATE) {
+        const cellValue: any = fromWorkSheet.getCell(meta.from).value;
+        toWorkSheet.getCell(meta.to).value = moment(cellValue.result).format(
+          "YYYY-MM-DD"
+        );
       } else {
         toWorkSheet.getCell(meta.to).value = fromWorkSheet.getCell(
           meta.from
