@@ -2,7 +2,8 @@ import Excel from "exceljs";
 import moment from "moment";
 
 export const SHEET_NAME = {
-  _196000: "196000"
+  _196000: "196000",
+  _106700: "106700",
 };
 
 const CELL_VALUE_TYPE = {
@@ -12,6 +13,19 @@ const CELL_VALUE_TYPE = {
 };
 
 const CONVERSION_RELATIONS = {
+  [SHEET_NAME._106700]: {
+    "Reconciliation": [
+      {from: "A3", to: "A4"},
+      {from: "C6", to: "C10"},
+      {
+        range: {
+          tl: { col: 3.5, row: 10.5 },
+          br: { col: 11, row: 26.5 }
+        },
+        type: CELL_VALUE_TYPE.IMAGE
+      }
+    ]
+  },
   [SHEET_NAME._196000]: {
     "196000": [
       { from: "C6", to: "C8" },
@@ -32,7 +46,8 @@ const CONVERSION_RELATIONS = {
 };
 
 const templateFile = {
-  [SHEET_NAME._196000]: "202004-CNCDU-196000.xlsx"
+  [SHEET_NAME._196000]: "202004-CNCDU-196000.xlsx",
+  [SHEET_NAME._106700]: "202004-CNCDU-106700.xlsx"
 };
 
 function hasSheet(workbook: Excel.Workbook, sheetName: string) {
@@ -40,10 +55,13 @@ function hasSheet(workbook: Excel.Workbook, sheetName: string) {
 }
 
 export function validateTB(workbook: Excel.Workbook) {
-  if (!hasSheet(workbook, SHEET_NAME._196000)) {
-    return `tb sheet ${SHEET_NAME._196000} is not found`;
-  }
-  return ``;
+  const missingSheet: any = [];
+  Object.values(SHEET_NAME).forEach(sheetName => {
+      if(!hasSheet(workbook, sheetName)) {
+        missingSheet.push(sheetName);
+      }
+  })
+  return missingSheet.length > 0 ?  `tb sheet ${missingSheet.join(",")} is not found` : '';
 }
 
 export function loadTemplate(sheetName: string) {
