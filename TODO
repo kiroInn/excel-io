@@ -14,4 +14,5 @@ Todo:
   ✔ 验证非法文件类型 @done(20-05-31 00:46)
   ✔ 结果列表样式调整(添加loading效果) @done(20-05-31 01:30)
   ✔ 读取解析106700 @started(20-05-31 22:16) @done(20-06-01 10:20) @lasted(12h4m46s)
+  ☐ conversion relation 编辑Mapping @started(20-06-01 19:35)
   ☐ vue test import excel @started(20-05-28 21:38)

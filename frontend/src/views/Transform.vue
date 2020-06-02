@@ -1,6 +1,7 @@
 <template>
   <div class="home">
     <h1 v-if="!!message" class="message">{{ message }}</h1>
+    <div>
     <input
       type="file"
       id="file"
@@ -8,9 +9,18 @@
       v-on:change="handleFileUpload()"
       class="inputfile"
     />
-    <label for="file">Choose a file</label>
+    <label class="select-file" for="file">Choose a file</label>
+    <label class="configMapping" v-on:click="isEditMapping = true">Config</label>
+    </div>
+    
     <loader v-show="isLoading" class="loader"></loader>
-    <a v-if="!!files.length" class="downloadAll" v-on:click="downloadAll" href="javascript:void(0)">Download all</a>
+    <a
+      v-if="!!files.length"
+      class="downloadAll"
+      v-on:click="downloadAll"
+      href="javascript:void(0)"
+      >Download all</a
+    >
     <ul v-if="!!files.length" class="results">
       <li v-for="file in files" :key="file.key">
         <span>{{ file.name }}</span>
@@ -24,33 +34,88 @@
       </li>
     </ul>
     <h1 class="slogan">Smart <strong>Excel</strong> Transform</h1>
+    <modal
+      v-if="isEditMapping"
+      v-on:submit="onEditConfig"
+      v-on:close="isEditMapping = false"
+    >
+      <template v-slot:header>
+        <h1>Config Mapping</h1>
+      </template>
+      <template v-slot:body>
+        <div v-for="(mapping, index) in mappings" :key="index">
+          templateName: <input type="text" v-model="mapping.templateName" />
+          <ul>
+            <li v-for="(mp, index) in mapping.values" :key="index">
+              from: <input type="text" v-model="mp.from" /> to:
+              <input type="text" v-model="mp.to" /> type:
+              <select v-model="mp.type">
+                <option :selected="mp.type === 'string'" value="string"
+                  >String</option
+                >
+                <option :selected="mp.type === 'image'" value="image"
+                  >Image</option
+                >
+                <option :selected="mp.type === 'date'" value="date"
+                  >Date</option
+                >
+              </select>
+              <div v-if="mp.type === 'image'">
+                <label>tl:col</label
+                ><input type="text" v-model="mp.range.tl.col" />
+                <label>tl:row</label
+                ><input type="text" v-model="mp.range.tl.row" />
+                <label>br:col</label
+                ><input type="text" v-model="mp.range.br.col" />
+                <label>br:row</label
+                ><input type="text" v-model="mp.range.br.row" />
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div></div>
+      </template>
+    </modal>
   </div>
 </template>
 
 <script>
 import Loader from "@/components/loader";
+import Modal from "@/components/modal";
 import * as Excel from "exceljs";
 import { saveAs } from "file-saver";
-import { validateTB, loadTemplate, SHEET_NAME, fillData } from "./service";
+import { validateFrom, loadTemplate, fillData } from "@/service/transform";
 import { isXlsx } from "@/util/file";
+import _ from "lodash";
+import { DEFAULT_MAPPING } from "@/service/mapping";
 
 export default {
   name: "Transform",
   components: {
     Loader,
+    Modal
+  },
+  created() {
+    this.mappings = _.clone(DEFAULT_MAPPING);
   },
   data() {
     return {
       message: "",
       isLoading: false,
-      files: []
+      isEditMapping: false,
+      files: [],
+      mappings: []
     };
   },
   methods: {
+    onEditConfig() {
+      console.log(this.mappings);
+      this.isEditMapping = false;
+    },
     downloadAll() {
-       if(this.files.length > 0){
-         this.files.forEach(file => this.download(file.key))
-       }
+      if (this.files.length > 0) {
+        this.files.forEach(file => this.download(file.key));
+      }
     },
     async download(key) {
       const file = this.files.filter(f => f.key === key)[0];
@@ -70,23 +135,22 @@ export default {
       reader.onload = async () => {
         const fromWorkBook = new Excel.Workbook();
         await fromWorkBook.xlsx.load(reader.result);
-        this.message = validateTB(fromWorkBook);
+        this.message = validateFrom(fromWorkBook, this.mappings);
         if (!this.message) {
-          Object.values(SHEET_NAME).forEach(async sheetName => {
-            const toWorkbook = await loadTemplate(sheetName);
-            const resultWrokbook = fillData(
-              fromWorkBook,
-              toWorkbook,
-              sheetName
+          this.mappings.forEach(async mapping => {
+            const toWorkbook = await loadTemplate(
+              _.get(mapping, "templateName")
             );
+            const resultWrokbook = fillData(fromWorkBook, toWorkbook, mapping);
             this.files.push({
-                key: sheetName,
-                name: `202004-CNCDU-${sheetName}.xlsx`,
-                workbook: resultWrokbook,
-                buffer: resultWrokbook.xlsx.writeBuffer()
-              })
-            if(this.files.length === Object.keys(SHEET_NAME).length) this.isLoading = false;
-          })
+              key: _.get(mapping, "fileName"),
+              name: _.get(mapping, "fileName"),
+              workbook: resultWrokbook,
+              buffer: resultWrokbook.xlsx.writeBuffer()
+            });
+            if (this.files.length === this.mappings.length)
+              this.isLoading = false;
+          });
           console.log("parsing success", this.files);
         } else {
           this.isLoading = false;
@@ -187,7 +251,15 @@ export default {
   color: black;
   border-radius: 3px;
 }
-.loader{
+.configMapping {
+  margin-left: 8px;
+  font-size: 14px;
+  padding: 4px;
+  border-radius: 2px;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.loader {
   margin-top: 24px;
 }
 </style>

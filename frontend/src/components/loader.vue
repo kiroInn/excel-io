@@ -1,5 +1,5 @@
 <template>
-   <div class="container">
+  <div class="container">
     <div class="circleloader"></div>
   </div>
 </template>
@@ -8,14 +8,13 @@
 import { Component, Vue } from "vue-property-decorator";
 
 @Component
-export default class Loader extends Vue {
-}
+export default class Loader extends Vue {}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="less">
 @import "../css/color.less";
-.container{
+.container {
   position: relative;
 }
 .circleloader {
@@ -28,16 +27,16 @@ export default class Loader extends Vue {
   height: 20px;
   padding: 4px;
   background: #389c6e;
-  
+
   &:before {
-    content: '';
+    content: "";
     position: absolute;
     border-radius: 16px;
     width: 20px;
     height: 12px;
     left: 0;
     background: @primary-color;
-    animation: push 1s infinite linear;    
+    animation: push 1s infinite linear;
   }
 }
 
@@ -46,5 +45,4 @@ export default class Loader extends Vue {
     left: 56px;
   }
 }
-
 </style>
