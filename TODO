@@ -16,5 +16,5 @@ Todo:
   ✔ 读取解析106700 @started(20-05-31 22:16) @done(20-06-01 10:20) @lasted(12h4m46s)
   ✔ conversion relation 编辑Mapping @started(20-06-01 19:35) @done(20-06-02 15:38) @lasted(20h3m50s)
   ✔ refactor mapping constructor @done(20-06-04 00:20)
-  ☐ mapping 可以增加 @started(20-06-03 10:39)
+  ✔ add mapping @started(20-06-03 10:39) @done(20-06-04 00:51) @lasted(14h12m24s)
   ☐ vue test import excel @started(20-05-28 21:38)

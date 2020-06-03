@@ -53,6 +53,7 @@
               <th>toFile</th>
               <th>to</th>
               <th>type</th>
+              <th>operate</th>
             </tr>
               <tr v-for="(mapping, index) in mappings" :key="index">
                 <!-- <td>
@@ -61,7 +62,7 @@
                   </select>
                 </td> -->
                 <td>
-                  <input type="text" v-model="mapping.from" />
+                  <span>{{index}}</span><input type="text" v-model="mapping.from" />
                 </td>
                 <td>
                    <select v-model="mapping.toFile">
@@ -103,6 +104,10 @@
                     >
                   </select>
                 </td>
+                <td><a v-on:click="removeMapping(index)" href="javascript:void(0);">delete</a> </td>
+              </tr>
+              <tr>
+                <td colspan="5"><a v-on:click="addMapping" href="javascript:void(0);">Add</a></td>
               </tr>
           </table>
         </div>
@@ -142,6 +147,15 @@ export default {
     };
   },
   methods: {
+    addMapping(){
+      this.mappings.push({type: 'string', range: {
+              tl: { col: 0, row: 0 },
+              br: { col: 1, row: 1 }
+            }})
+    },
+    removeMapping(deleteIndex) {
+      this.mappings = _.remove(this.mappings, (n, index) => deleteIndex!==index);
+    },
     onEditConfig() {
       console.log(this.mappings);
       this.isEditMapping = false;
@@ -290,7 +304,6 @@ export default {
   font-size: 14px;
   padding: 4px;
   border-radius: 2px;
-  text-decoration: underline;
   cursor: pointer;
 }
 .loader {
