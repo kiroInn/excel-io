@@ -56,7 +56,7 @@ export default class Modal extends Vue {}
 }
 
 .modal-container {
-  width: 600px;
+  width: 800px;
   margin: 0px auto;
   padding: 20px 30px;
   background-color: #fff;

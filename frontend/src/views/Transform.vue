@@ -2,17 +2,19 @@
   <div class="home">
     <h1 v-if="!!message" class="message">{{ message }}</h1>
     <div>
-    <input
-      type="file"
-      id="file"
-      ref="file"
-      v-on:change="handleFileUpload()"
-      class="inputfile"
-    />
-    <label class="select-file" for="file">Choose a file</label>
-    <label class="configMapping" v-on:click="isEditMapping = true">Config</label>
+      <input
+        type="file"
+        id="file"
+        ref="file"
+        v-on:change="handleFileUpload()"
+        class="inputfile"
+      />
+      <label class="select-file" for="file">Choose a file</label>
+      <label class="configMapping" v-on:click="isEditMapping = true"
+        >Config</label
+      >
     </div>
-    
+
     <loader v-show="isLoading" class="loader"></loader>
     <a
       v-if="!!files.length"
@@ -43,37 +45,67 @@
         <h1>Config Mapping</h1>
       </template>
       <template v-slot:body>
-        <div v-for="(mapping, index) in mappings" :key="index">
-          templateName: <input type="text" v-model="mapping.templateName" />
-          <ul>
-            <li v-for="(mp, index) in mapping.values" :key="index">
-              from: <input type="text" v-model="mp.from" /> to:
-              <input type="text" v-model="mp.to" /> type:
-              <select v-model="mp.type">
-                <option :selected="mp.type === 'string'" value="string"
-                  >String</option
-                >
-                <option :selected="mp.type === 'image'" value="image"
-                  >Image</option
-                >
-                <option :selected="mp.type === 'date'" value="date"
-                  >Date</option
-                >
-              </select>
-              <div v-if="mp.type === 'image'">
-                <label>tl:col</label
-                ><input type="text" v-model="mp.range.tl.col" />
-                <label>tl:row</label
-                ><input type="text" v-model="mp.range.tl.row" />
-                <label>br:col</label
-                ><input type="text" v-model="mp.range.br.col" />
-                <label>br:row</label
-                ><input type="text" v-model="mp.range.br.row" />
-              </div>
-            </li>
-          </ul>
+        <div class="configMapping">
+          <table>
+            <tr>
+              <!-- <th>fromFile</th> -->
+              <th>from</th>
+              <th>toFile</th>
+              <th>to</th>
+              <th>type</th>
+            </tr>
+              <tr v-for="(mapping, index) in mappings" :key="index">
+                <!-- <td>
+                   <select v-model="mapping.fromFile">
+                     <option value="">选择文件</option>
+                  </select>
+                </td> -->
+                <td>
+                  <input type="text" v-model="mapping.from" />
+                </td>
+                <td>
+                   <select v-model="mapping.toFile">
+                     <option value="">选择文件</option>
+                     <option v-for="file in toFiles" :key="file" :value="file" :selected="file === mapping.toFile">{{file}}</option>
+                  </select>
+                </td>
+                <td :class="{imageType: mapping.type === 'image'}">
+                  <input type="text" v-model="mapping.to" />
+                  <div v-if="mapping.type === 'image'">
+                    <div>
+                      <label>tl:col</label
+                      ><input type="text" v-model="mapping.range.tl.col" />
+                    </div>
+                    <div>
+                      <label>tl:row</label
+                      ><input type="text" v-model="mapping.range.tl.row" />
+                    </div>
+                    <div>
+                      <label>br:col</label
+                      ><input type="text" v-model="mapping.range.br.col" />
+                    </div>
+                    <div>
+                      <label>br:row</label
+                      ><input type="text" v-model="mapping.range.br.row" />
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <select v-model="mapping.type">
+                    <option :selected="mapping.type === 'string'" value="string"
+                      >String</option
+                    >
+                    <option :selected="mapping.type === 'image'" value="image"
+                      >Image</option
+                    >
+                    <option :selected="mapping.type === 'date'" value="date"
+                      >Date</option
+                    >
+                  </select>
+                </td>
+              </tr>
+          </table>
         </div>
-        <div></div>
       </template>
     </modal>
   </div>
@@ -87,7 +119,7 @@ import { saveAs } from "file-saver";
 import { validateFrom, loadTemplate, fillData } from "@/service/transform";
 import { isXlsx } from "@/util/file";
 import _ from "lodash";
-import { DEFAULT_MAPPING } from "@/service/mapping";
+import { DEFAULT_MAPPING, transformMappings } from "@/service/mapping";
 
 export default {
   name: "Transform",
@@ -96,7 +128,8 @@ export default {
     Modal
   },
   created() {
-    this.mappings = _.clone(DEFAULT_MAPPING);
+    this.mappings = transformMappings(DEFAULT_MAPPING);
+    this.toFiles = ['196000.xlsx', '106700.xlsx']
   },
   data() {
     return {
@@ -104,7 +137,8 @@ export default {
       isLoading: false,
       isEditMapping: false,
       files: [],
-      mappings: []
+      mappings: [],
+      toFiles: [],
     };
   },
   methods: {
@@ -261,5 +295,55 @@ export default {
 }
 .loader {
   margin-top: 24px;
+}
+.configMapping {
+  table {
+    width: 100%;
+  }
+  tr,
+  td,
+  th {
+    padding: 4px 2px;
+  }
+  input,
+  select {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-variant: tabular-nums;
+    list-style: none;
+    -webkit-font-feature-settings: "tnum";
+    font-feature-settings: "tnum";
+    position: relative;
+    display: inline-block;
+    min-width: 0;
+    padding: 4px 11px;
+    color: rgba(0, 0, 0, 0.65);
+    font-size: 14px;
+    line-height: 1.5715;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #d9d9d9;
+    border-radius: 2px;
+    -webkit-transition: all 0.3s;
+    transition: all 0.3s;
+  }
+  .values {
+    display: flex;
+    > div {
+      flex-grow: 1;
+    }
+  }
+  .imageType {
+    display: flex;
+    input {
+      font-size: 10px;
+      padding: 2px 4px;
+    }
+    > div {
+      display: flex;
+      flex-direction: column;
+    }
+  }
 }
 </style>

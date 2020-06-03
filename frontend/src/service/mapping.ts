@@ -1,4 +1,5 @@
 import { CELL_VALUE_TYPE } from "@/service/transform";
+import _ from "lodash";
 
 export const DEFAULT_MAPPING = [
   {
@@ -50,3 +51,15 @@ export const DEFAULT_MAPPING = [
     ]
   }
 ];
+
+export function transformMappings(mappings: Array<object>): Array<object> {
+  let result: Array<object> = [];
+  _.forEach(mappings, mapping => {
+    const toFile = _.get(mapping, "templateName");
+    result = _.concat(
+      result,
+      _.map(_.get(mapping, "values"), mp => ({ ...mp, toFile }))
+    );
+  });
+  return result;
+}

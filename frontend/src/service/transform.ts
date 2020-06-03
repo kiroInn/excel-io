@@ -82,7 +82,8 @@ export function fillData(
       });
       toSheet.addImage(imageId, _.get(value, "range"));
     } else if (type === CELL_VALUE_TYPE.DATE) {
-      const cellValue = fromSheet.getCell(getCellPosition(_.get(value, "from"))).value;
+      const cellValue = fromSheet.getCell(getCellPosition(_.get(value, "from")))
+        .value;
       toSheet.getCell(getCellPosition(_.get(value, "to"))).value = moment(
         _.get(cellValue, "result")
       ).format("YYYY-MM-DD");
