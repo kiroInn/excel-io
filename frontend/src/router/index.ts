@@ -6,6 +6,10 @@ Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
   {
+    path: "/",
+    redirect: "/transform"
+  },
+  {
     path: "/transform",
     name: "transform",
     component: Transform

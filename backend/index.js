@@ -15,10 +15,6 @@ app.use(function(req, res, next) {
 
 app.use('/static', express.static(__dirname +'/template'))
 
-
-// app.get('/template', (req,res) => {
-
-// })
 app.get('/index', (req, res) => {
   res.sendFile(path.join(__dirname + '/../frontend/dist/index.html'));
 });

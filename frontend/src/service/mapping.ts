@@ -63,3 +63,32 @@ export function transformMappings(mappings: Array<object>): Array<object> {
   });
   return result;
 }
+
+export function reverseTransformMappings(mappings: object[]): object[] {
+  return _.reduce(
+    mappings,
+    (result: object[], curr: object) => {
+      const item = _.find(
+        result,
+        item => _.get(item, "templateName") === _.get(curr, "toFile")
+      );
+      const value = {
+        from: _.get(curr, "from"),
+        to: _.get(curr, "to"),
+        type: _.get(curr, "type")
+      };
+      if (_.get(curr, "type") === CELL_VALUE_TYPE.IMAGE)
+        _.assign(value, { range: _.get(curr, "range") });
+      if (item) {
+        _.get(item, "values", []).push(value);
+      } else {
+        result.push({
+          templateName: _.get(curr, "toFile"),
+          values: [value]
+        });
+      }
+      return result;
+    },
+    []
+  );
+}

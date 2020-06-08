@@ -16,16 +16,23 @@
     </div>
 
     <loader v-show="isLoading" class="loader"></loader>
-    <a
-      v-if="!!files.length"
-      class="downloadAll"
-      v-on:click="downloadAll"
-      href="javascript:void(0)"
-      >Download all</a
-    >
+    <div v-if="!!files.length" class="downloadOperate">
+      <a class="downloadAll" v-on:click="downloadAll" href="javascript:void(0)"
+        >Download all</a
+      >
+      <input type="checkbox" id="prefixing" v-model="isPrefixing" />
+      <label for="prefixing" class="prefixing">enable prefixing</label>
+    </div>
+    <div v-if="isPrefixing" class="filePrefix">
+      <input
+        v-model="prefixFileName"
+        type="text"
+        placeholder="file name prefix"
+      />
+    </div>
     <ul v-if="!!files.length" class="results">
       <li v-for="file in files" :key="file.key">
-        <span>{{ file.name }}</span>
+        <span>{{ prefixFileName }}{{ file.name }}</span>
         <span class="status-success">success</span>
         <a
           href="javascript:void(0);"
@@ -47,14 +54,21 @@
       <template v-slot:body>
         <div class="configMapping">
           <table>
-            <tr>
-              <!-- <th>fromFile</th> -->
-              <th>from</th>
-              <th>toFile</th>
-              <th>to</th>
-              <th>type</th>
-              <th>operate</th>
-            </tr>
+            <thead>
+              <tr>
+                <th>from</th>
+                <th colspan="2">to</th>
+                <th rowspan="2">type</th>
+                <th rowspan="2">operate</th>
+              </tr>
+              <tr>
+                <!-- <th>fromFile</th> -->
+                <td>cell</td>
+                <td>fileName</td>
+                <td>cell</td>
+              </tr>
+            </thead>
+            <tbody>
               <tr v-for="(mapping, index) in mappings" :key="index">
                 <!-- <td>
                    <select v-model="mapping.fromFile">
@@ -62,16 +76,24 @@
                   </select>
                 </td> -->
                 <td>
-                  <span>{{index}}</span><input type="text" v-model="mapping.from" />
+                  <input type="text" v-model="mapping.from" />
                 </td>
                 <td>
-                   <select v-model="mapping.toFile">
-                     <option value="">选择文件</option>
-                     <option v-for="file in toFiles" :key="file" :value="file" :selected="file === mapping.toFile">{{file}}</option>
+                  <select v-model="mapping.toFile">
+                    <option value="">选择文件</option>
+                    <option
+                      v-for="file in toFiles"
+                      :key="file"
+                      :value="file"
+                      :selected="file === mapping.toFile"
+                      >{{ file }}</option
+                    >
                   </select>
                 </td>
-                <td :class="{imageType: mapping.type === 'image'}">
-                  <input type="text" v-model="mapping.to" />
+                <td :class="{ imageType: mapping.type === 'image' }">
+                  <div class="to">
+                    <input type="text" v-model="mapping.to" />
+                  </div>
                   <div v-if="mapping.type === 'image'">
                     <div>
                       <label>tl:col</label
@@ -104,11 +126,25 @@
                     >
                   </select>
                 </td>
-                <td><a v-on:click="removeMapping(index)" href="javascript:void(0);">delete</a> </td>
+                <td>
+                  <a
+                    v-on:click="removeMapping(index)"
+                    href="javascript:void(0);"
+                    >delete</a
+                  >
+                </td>
               </tr>
               <tr>
-                <td colspan="5"><a v-on:click="addMapping" href="javascript:void(0);">Add</a></td>
+                <td colspan="5">
+                  <a
+                    class="addMapping"
+                    v-on:click="addMapping"
+                    href="javascript:void(0);"
+                    >Add</a
+                  >
+                </td>
               </tr>
+            </tbody>
           </table>
         </div>
       </template>
@@ -124,7 +160,11 @@ import { saveAs } from "file-saver";
 import { validateFrom, loadTemplate, fillData } from "@/service/transform";
 import { isXlsx } from "@/util/file";
 import _ from "lodash";
-import { DEFAULT_MAPPING, transformMappings } from "@/service/mapping";
+import {
+  DEFAULT_MAPPING,
+  transformMappings,
+  reverseTransformMappings
+} from "@/service/mapping";
 
 export default {
   name: "Transform",
@@ -134,27 +174,35 @@ export default {
   },
   created() {
     this.mappings = transformMappings(DEFAULT_MAPPING);
-    this.toFiles = ['196000.xlsx', '106700.xlsx']
+    this.toFiles = ["196000.xlsx", "106700.xlsx"];
   },
   data() {
     return {
+      prefixFileName: "",
       message: "",
       isLoading: false,
       isEditMapping: false,
+      isPrefixing: false,
       files: [],
       mappings: [],
-      toFiles: [],
+      toFiles: []
     };
   },
   methods: {
-    addMapping(){
-      this.mappings.push({type: 'string', range: {
-              tl: { col: 0, row: 0 },
-              br: { col: 1, row: 1 }
-            }})
+    addMapping() {
+      this.mappings.push({
+        type: "string",
+        range: {
+          tl: { col: 0, row: 0 },
+          br: { col: 1, row: 1 }
+        }
+      });
     },
     removeMapping(deleteIndex) {
-      this.mappings = _.remove(this.mappings, (n, index) => deleteIndex!==index);
+      this.mappings = _.remove(
+        this.mappings,
+        (n, index) => deleteIndex !== index
+      );
     },
     onEditConfig() {
       console.log(this.mappings);
@@ -172,7 +220,8 @@ export default {
       const fileType =
         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
       const blob = new Blob([buffer], { type: fileType });
-      saveAs(blob, file.name);
+      const fileName = `${this.prefixFileName}${file.name}`;
+      saveAs(blob, fileName);
     },
     handleFileUpload() {
       this.message = "";
@@ -180,24 +229,25 @@ export default {
       this.files = [];
       const file = this.$refs.file.files[0];
       const reader = new FileReader();
+      const mappings = reverseTransformMappings(this.mappings);
+      console.log("mappings: ", mappings);
       reader.onload = async () => {
         const fromWorkBook = new Excel.Workbook();
         await fromWorkBook.xlsx.load(reader.result);
-        this.message = validateFrom(fromWorkBook, this.mappings);
+        this.message = validateFrom(fromWorkBook, mappings);
         if (!this.message) {
-          this.mappings.forEach(async mapping => {
+          mappings.forEach(async mapping => {
             const toWorkbook = await loadTemplate(
               _.get(mapping, "templateName")
             );
             const resultWrokbook = fillData(fromWorkBook, toWorkbook, mapping);
             this.files.push({
-              key: _.get(mapping, "fileName"),
-              name: _.get(mapping, "fileName"),
+              key: _.get(mapping, "templateName"),
+              name: _.get(mapping, "templateName"),
               workbook: resultWrokbook,
               buffer: resultWrokbook.xlsx.writeBuffer()
             });
-            if (this.files.length === this.mappings.length)
-              this.isLoading = false;
+            if (this.files.length === mappings.length) this.isLoading = false;
           });
           console.log("parsing success", this.files);
         } else {
@@ -249,6 +299,7 @@ export default {
 }
 .inputfile + label {
   cursor: pointer;
+  margin-right: 8px;
 }
 .slogan {
   font-size: 44px;
@@ -257,9 +308,16 @@ export default {
     font-weight: 600;
   }
 }
+.downloadOperate {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+}
+.filePrefix {
+  margin-top: 10px;
+}
 .downloadAll {
   border-radius: 3px;
-  margin-top: 18px;
   background-color: #02c487;
   padding: 8px 16px;
   font-size: 16px;
@@ -268,7 +326,7 @@ export default {
   text-decoration: none;
 }
 .results {
-  margin-top: 24px;
+  margin-top: 16px;
   border: 1px solid gray;
   padding: 8px;
   border-radius: 2px;
@@ -299,8 +357,10 @@ export default {
   color: black;
   border-radius: 3px;
 }
-.configMapping {
-  margin-left: 8px;
+
+.configMapping,
+.prefixing {
+  color: @primary-color;
   font-size: 14px;
   padding: 4px;
   border-radius: 2px;
@@ -310,13 +370,41 @@ export default {
   margin-top: 24px;
 }
 .configMapping {
+  height: calc(100vh - 500px);
+  overflow-y: scroll;
   table {
     width: 100%;
+  }
+  a {
+    color: @primary-color;
+    border-radius: 2px;
+    padding: 2px 4px;
+    text-decoration: none;
+    &.addMapping {
+      margin-top: 5px;
+      width: 100px;
+      height: 20px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+  tr {
+    border-top: 1px solid #d9d9d9;
+    border-bottom: 1px solid #d9d9d9;
+  }
+  th[rowspan] {
+    vertical-align: middle;
+  }
+  thead tr,
+  td,
+  th {
+    padding: 6px 4px;
   }
   tr,
   td,
   th {
-    padding: 4px 2px;
+    padding: 12px 4px;
   }
   input,
   select {
@@ -349,13 +437,19 @@ export default {
   }
   .imageType {
     display: flex;
+    width: 85%;
     input {
       font-size: 10px;
       padding: 2px 4px;
     }
     > div {
       display: flex;
+      justify-content: center;
+      align-items: flex-end;
       flex-direction: column;
+      input {
+        width: 50%;
+      }
     }
   }
 }

@@ -16,12 +16,20 @@
 
         <div class="modal-footer">
           <slot name="footer">
-            <button class="modal-default-button" @click="$emit('submit')">
+            <a
+              href="javascript:void(0);"
+              class="modal-default-button"
+              @click="$emit('submit')"
+            >
               OK
-            </button>
-            <button class="modal-default-button" @click="$emit('close')">
+            </a>
+            <a
+              href="javascript:void(0);"
+              class="modal-default-button"
+              @click="$emit('close')"
+            >
               CLOSE
-            </button>
+            </a>
           </slot>
         </div>
       </div>
@@ -38,6 +46,8 @@ export default class Modal extends Vue {}
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="less">
+@import "../css/color.less";
+
 .modal-mask {
   position: fixed;
   z-index: 9998;
@@ -58,7 +68,7 @@ export default class Modal extends Vue {}
 .modal-container {
   width: 800px;
   margin: 0px auto;
-  padding: 20px 30px;
+  padding: 20px 30px 40px;
   background-color: #fff;
   border-radius: 2px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
@@ -79,15 +89,6 @@ export default class Modal extends Vue {}
   float: right;
 }
 
-/*
- * The following styles are auto-applied to elements with
- * transition="modal" when their visibility is toggled
- * by Vue.js.
- *
- * You can easily play with the modal transition by editing
- * these styles.
- */
-
 .modal-enter {
   opacity: 0;
 }
@@ -100,5 +101,14 @@ export default class Modal extends Vue {}
 .modal-leave-active .modal-container {
   -webkit-transform: scale(1.1);
   transform: scale(1.1);
+}
+.modal-footer a {
+  margin-left: 4px;
+  color: white;
+  border-radius: 2px;
+  background-color: @primary-color;
+  padding: 4px 8px;
+  text-decoration: none;
+  font-size: 14px;
 }
 </style>

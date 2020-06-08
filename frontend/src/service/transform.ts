@@ -62,10 +62,22 @@ export function loadTemplate(templateName: string) {
   });
 }
 
+interface Mapping {
+  valuse: MappingValue[];
+  templateName: string;
+}
+
+interface MappingValue {
+  from: string;
+  to: string;
+  type: string;
+  range?: object;
+}
+
 export function fillData(
   from: Excel.Workbook,
   to: Excel.Workbook,
-  mapping: object
+  mapping: Mapping
 ) {
   const values = _.get(mapping, "values");
   _.forEach(values, value => {
