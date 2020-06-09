@@ -5,7 +5,9 @@ import * as _ from "lodash";
 export const CELL_VALUE_TYPE = {
   IMAGE: "image",
   DATE: "date",
-  STRING: "string"
+  STRING: "string",
+  SHEET: "sheet",
+  VALUE: "value"
 };
 
 function hasSheet(workbook: Excel.Workbook, sheetName: string) {
@@ -48,20 +50,6 @@ export function validateFrom(
     : "";
 }
 
-export function loadTemplate(templateName: string) {
-  return new Promise(resolve => {
-    fetch(`http://localhost:3000/static/${templateName}`)
-      .then(async response => {
-        response.arrayBuffer().then(async buffer => {
-          const workbook = new Excel.Workbook();
-          await workbook.xlsx.load(buffer);
-          resolve(workbook);
-        });
-      })
-      .catch(err => console.log("err", err));
-  });
-}
-
 interface Mapping {
   valuse: MappingValue[];
   templateName: string;
@@ -71,7 +59,7 @@ interface MappingValue {
   from: string;
   to: string;
   type: string;
-  range?: object;
+  range?: object | undefined;
 }
 
 export function fillData(
@@ -80,11 +68,40 @@ export function fillData(
   mapping: Mapping
 ) {
   const values = _.get(mapping, "values");
+  console.log("values: ", values);
   _.forEach(values, value => {
     const fromSheet = from.getWorksheet(getCellSheet(_.get(value, "from")));
-    const toSheet = to.getWorksheet(getCellSheet(_.get(value, "to")));
+    let toSheet = to.getWorksheet(getCellSheet(_.get(value, "to")));
+    if (!toSheet) {
+      toSheet = to.addWorksheet(getCellSheet(_.get(value, "to")));
+    }
     const type = _.get(value, "type");
-    if (type === CELL_VALUE_TYPE.IMAGE) {
+    if (type === CELL_VALUE_TYPE.VALUE) {
+      //todo
+    }
+    if (type === CELL_VALUE_TYPE.SHEET) {
+      console.log("toSheet.model: ", toSheet.model);
+      console.log("fromSheet.model: ", fromSheet.model);
+      toSheet.model = fromSheet.model;
+      toSheet.name = getCellSheet(_.get(value, "to"));
+      _.each(fromSheet.getImages(), image => {
+        const fromImageId = Number(_.get(image, "imageId"));
+        const imageId = to.addImage({
+          buffer: from.getImage(fromImageId).buffer,
+          extension: "png"
+        });
+        toSheet.addImage(imageId, {
+          tl: {
+            col: Number(_.get(image, "range.tl.col")),
+            row: Number(_.get(image, "range.tl.row"))
+          },
+          br: {
+            col: Number(_.get(image, "range.br.col")),
+            row: Number(_.get(image, "range.br.row"))
+          }
+        });
+      });
+    } else if (type === CELL_VALUE_TYPE.IMAGE) {
       const fromImageId = Number(
         _.get(_.first(fromSheet.getImages()), "imageId")
       );

@@ -14,7 +14,7 @@
         >Config</label
       >
     </div>
-
+    <div class="loader" v-show="isLoading">Processing...</div>
     <loader v-show="isLoading" class="loader"></loader>
     <div v-if="!!files.length" class="downloadOperate">
       <a class="downloadAll" v-on:click="downloadAll" href="javascript:void(0)"
@@ -42,7 +42,7 @@
         >
       </li>
     </ul>
-    <h1 class="slogan">Smart <strong>Excel</strong> Transform</h1>
+    <h1 class="slogan">Smart <strong>Excel</strong> Tools</h1>
     <modal
       v-if="isEditMapping"
       v-on:submit="onEditConfig"
@@ -50,22 +50,32 @@
     >
       <template v-slot:header>
         <h1>Config Mapping</h1>
+        <input type="checkbox" id="isJSON" v-model="isJSON" />
+        <label for="isJSON" class="isJSON">switch JSON</label>
       </template>
       <template v-slot:body>
         <div class="configMapping">
-          <table>
+          <div v-if="isJSON">
+            <textarea
+              name=""
+              id=""
+              cols="30"
+              rows="10"
+              v-model="mappingsJSON"
+            ></textarea>
+          </div>
+          <table v-if="!isJSON">
             <thead>
               <tr>
-                <th>from</th>
+                <th rowspan="2">source</th>
                 <th colspan="2">to</th>
                 <th rowspan="2">type</th>
                 <th rowspan="2">operate</th>
               </tr>
               <tr>
                 <!-- <th>fromFile</th> -->
-                <td>cell</td>
+                <td>destination</td>
                 <td>fileName</td>
-                <td>cell</td>
               </tr>
             </thead>
             <tbody>
@@ -77,18 +87,6 @@
                 </td> -->
                 <td>
                   <input type="text" v-model="mapping.from" />
-                </td>
-                <td>
-                  <select v-model="mapping.toFile">
-                    <option value="">选择文件</option>
-                    <option
-                      v-for="file in toFiles"
-                      :key="file"
-                      :value="file"
-                      :selected="file === mapping.toFile"
-                      >{{ file }}</option
-                    >
-                  </select>
                 </td>
                 <td :class="{ imageType: mapping.type === 'image' }">
                   <div class="to">
@@ -114,15 +112,21 @@
                   </div>
                 </td>
                 <td>
+                  <input type="text" v-model="mapping.toFile" />
+                </td>
+                <td>
                   <select v-model="mapping.type">
+                    <option :selected="mapping.type === 'sheet'" value="sheet"
+                      >Sheet</option
+                    >
                     <option :selected="mapping.type === 'string'" value="string"
                       >String</option
                     >
-                    <option :selected="mapping.type === 'image'" value="image"
-                      >Image</option
-                    >
                     <option :selected="mapping.type === 'date'" value="date"
                       >Date</option
+                    >
+                    <option :selected="mapping.type === 'image'" value="image"
+                      >Image</option
                     >
                   </select>
                 </td>
@@ -157,7 +161,7 @@ import Loader from "@/components/loader";
 import Modal from "@/components/modal";
 import * as Excel from "exceljs";
 import { saveAs } from "file-saver";
-import { validateFrom, loadTemplate, fillData } from "@/service/transform";
+import { validateFrom, fillData } from "@/service/transform";
 import { isXlsx } from "@/util/file";
 import _ from "lodash";
 import {
@@ -172,9 +176,23 @@ export default {
     Loader,
     Modal
   },
+  computed: {
+    mappingsJSON: {
+      get: function() {
+        return JSON.stringify(this.mappings);
+      },
+      set: function(newValue) {
+        console.log("newValue: ", newValue);
+        try {
+          this.mappings = JSON.parse(newValue);
+        } catch (e) {
+          console.error(e);
+        }
+      }
+    }
+  },
   created() {
     this.mappings = transformMappings(DEFAULT_MAPPING);
-    this.toFiles = ["196000.xlsx", "106700.xlsx"];
   },
   data() {
     return {
@@ -183,9 +201,9 @@ export default {
       isLoading: false,
       isEditMapping: false,
       isPrefixing: false,
+      isJSON: false,
       files: [],
-      mappings: [],
-      toFiles: []
+      mappings: []
     };
   },
   methods: {
@@ -237,9 +255,7 @@ export default {
         this.message = validateFrom(fromWorkBook, mappings);
         if (!this.message) {
           mappings.forEach(async mapping => {
-            const toWorkbook = await loadTemplate(
-              _.get(mapping, "templateName")
-            );
+            const toWorkbook = new Excel.Workbook();
             const resultWrokbook = fillData(fromWorkBook, toWorkbook, mapping);
             this.files.push({
               key: _.get(mapping, "templateName"),
@@ -271,7 +287,7 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: calc(100vh - 250px);
+  height: calc(100vh - 80px);
   background-color: mintcream;
 }
 .inputfile {
@@ -314,6 +330,26 @@ export default {
   margin-top: 20px;
 }
 .filePrefix {
+  input {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-variant: tabular-nums;
+    list-style: none;
+    font-feature-settings: "tnum";
+    position: relative;
+    display: inline-block;
+    min-width: 0;
+    padding: 4px 11px;
+    color: rgba(0, 0, 0, 0.65);
+    font-size: 14px;
+    line-height: 1.5715;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #d9d9d9;
+    border-radius: 2px;
+    transition: all 0.3s;
+  }
   margin-top: 10px;
 }
 .downloadAll {

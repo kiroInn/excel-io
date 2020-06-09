@@ -1,8 +1,11 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/transform">转换</router-link> |
-      <router-link to="/check">检查</router-link>
+      <div class="logo">
+        <img src="./assets/logo.png" alt="logo" /><span>excellent</span>
+      </div>
+      <router-link to="/transform">fill</router-link> |
+      <router-link to="/check">check</router-link>
     </div>
     <router-view />
   </div>
@@ -19,9 +22,22 @@
   color: #2c3e50;
 }
 
+.logo {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  right: 150px;
+  img {
+    width: 20px;
+  }
+  span {
+    margin-left: 6px;
+    color: #ffd732;
+    font-weight: 500;
+  }
+}
 #nav {
   padding: 30px;
-
   a {
     font-weight: bold;
     color: #2c3e50;
