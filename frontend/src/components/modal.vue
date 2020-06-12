@@ -76,6 +76,11 @@ export default class Modal extends Vue {}
   font-family: Helvetica, Arial, sans-serif;
 }
 
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 .modal-header h3 {
   margin-top: 0;
   color: #42b983;
@@ -107,7 +112,7 @@ export default class Modal extends Vue {}
   color: white;
   border-radius: 2px;
   background-color: @primary-color;
-  padding: 4px 8px;
+  padding: 6px 8px;
   text-decoration: none;
   font-size: 14px;
 }

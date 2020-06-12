@@ -1,27 +1,27 @@
 import Vue from "vue";
 import VueRouter, { RouteConfig } from "vue-router";
-import Transform from "../views/Transform.vue";
+import Split from "../views/Split.vue";
 
 Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
   {
     path: "/",
-    redirect: "/transform"
+    redirect: "/split"
   },
   {
-    path: "/transform",
-    name: "transform",
-    component: Transform
+    path: "/split",
+    name: "split",
+    component: Split
   },
   {
-    path: "/check",
-    name: "Check",
+    path: "/evaluation",
+    name: "Evaluation",
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () =>
-      import(/* webpackChunkName: "about" */ "../views/Check.vue")
+      import(/* webpackChunkName: "about" */ "../views/Evaluation.vue")
   }
 ];
 

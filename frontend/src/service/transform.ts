@@ -68,7 +68,6 @@ export function fillData(
   mapping: Mapping
 ) {
   const values = _.get(mapping, "values");
-  console.log("values: ", values);
   _.forEach(values, value => {
     const fromSheet = from.getWorksheet(getCellSheet(_.get(value, "from")));
     let toSheet = to.getWorksheet(getCellSheet(_.get(value, "to")));
@@ -80,8 +79,6 @@ export function fillData(
       //todo
     }
     if (type === CELL_VALUE_TYPE.SHEET) {
-      console.log("toSheet.model: ", toSheet.model);
-      console.log("fromSheet.model: ", fromSheet.model);
       toSheet.model = fromSheet.model;
       toSheet.name = getCellSheet(_.get(value, "to"));
       _.each(fromSheet.getImages(), image => {

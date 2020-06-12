@@ -5,6 +5,7 @@ export const DEFAULT_MAPPING = [
   {
     templateName: "106700.xlsx",
     values: [
+      { from: "106700-Instructions", to: "Instructions", type: "sheet" },
       { from: "106700-Reconciliation", to: "Reconciliation", type: "sheet" },
       {
         from: "106700-Outstanding Checks",
@@ -15,15 +16,14 @@ export const DEFAULT_MAPPING = [
         from: "106700-Deposits in Transit",
         to: "Deposits in Transit",
         type: "sheet"
-      },
-      { from: "106700-Instructions", to: "Instructions", type: "sheet" }
+      }
     ]
   },
   {
     templateName: "106710.xlsx",
     values: [
-      { from: "106710-Reconciliation", to: "Reconciliation", type: "sheet" },
       { from: "106710-Instructions", to: "Instructions", type: "sheet" },
+      { from: "106710-Reconciliation", to: "Reconciliation", type: "sheet" },
       {
         from: "106710-Outstanding Checks",
         to: "Outstanding Checks",
@@ -39,8 +39,8 @@ export const DEFAULT_MAPPING = [
   {
     templateName: "106750.xlsx",
     values: [
-      { from: "106750-Reconciliation", to: "Reconciliation", type: "sheet" },
       { from: "106750-Instructions", to: "Instructions", type: "sheet" },
+      { from: "106750-Reconciliation", to: "Reconciliation", type: "sheet" },
       {
         from: "106750-Outstanding Checks",
         to: "Outstanding Checks",
@@ -57,7 +57,7 @@ export const DEFAULT_MAPPING = [
     templateName: "112000.xlsx",
     values: [
       { from: "112000", to: "112000", type: "sheet" },
-      { from: "112000-1", to: "1", type: "sheet" }
+      { from: "112000-TB", to: "TB", type: "sheet" }
     ]
   },
   {
@@ -68,36 +68,36 @@ export const DEFAULT_MAPPING = [
     templateName: "190500.xlsx",
     values: [
       { from: "190500", to: "190500", type: "sheet" },
-      { from: "190500-1", to: "1", type: "sheet" }
+      { from: "190500-TB", to: "TB", type: "sheet" }
     ]
   },
   {
     templateName: "196000.xlsx",
     values: [
       { from: "196000", to: "196000", type: "sheet" },
-      { from: "196000-1", to: "1", type: "sheet" }
+      { from: "196000-TB", to: "TB", type: "sheet" }
     ]
   },
   {
     templateName: "200000.xlsx",
     values: [
       { from: "200000", to: "200000", type: "sheet" },
-      { from: "200000-1", to: "1", type: "sheet" },
-      { from: "200000-2", to: "2", type: "sheet" }
+      { from: "200000-TB", to: "TB", type: "sheet" },
+      { from: "200000-Open Liability", to: "Open Liability", type: "sheet" }
     ]
   },
   {
     templateName: "205000.xlsx",
     values: [
       { from: "205000", to: "205000", type: "sheet" },
-      { from: "205000-1", to: "1", type: "sheet" }
+      { from: "205000-TB", to: "TB", type: "sheet" }
     ]
   },
   {
     templateName: "215000.xlsx",
     values: [
       { from: "215000", to: "215000", type: "sheet" },
-      { from: "215000-1", to: "1", type: "sheet" },
+      { from: "215000-TB", to: "TB", type: "sheet" },
       { from: "215000-Jan", to: "Jan", type: "sheet" },
       { from: "215000-Feb", to: "Feb", type: "sheet" },
       { from: "215000-Mar", to: "Mar", type: "sheet" },
@@ -108,7 +108,7 @@ export const DEFAULT_MAPPING = [
   {
     templateName: "215100.xlsx",
     values: [
-      { from: "215100-1", to: "1", type: "sheet" },
+      { from: "215100-TB", to: "TB", type: "sheet" },
       { from: "215100", to: "215100", type: "sheet" }
     ]
   },
@@ -116,14 +116,14 @@ export const DEFAULT_MAPPING = [
     templateName: "215300.xlsx",
     values: [
       { from: "215300", to: "215300", type: "sheet" },
-      { from: "215300-1", to: "1", type: "sheet" }
+      { from: "215300-TB", to: "TB", type: "sheet" }
     ]
   },
   {
     templateName: "215600.xlsx",
     values: [
       { from: "215600", to: "215600", type: "sheet" },
-      { from: "215600-1", to: "1", type: "sheet" },
+      { from: "215600-TB", to: "TB", type: "sheet" },
       { from: "215600-Jan", to: "Jan", type: "sheet" },
       { from: "215600-Feb", to: "Feb", type: "sheet" },
       { from: "215600-Mar", to: "Mar", type: "sheet" },
@@ -135,14 +135,14 @@ export const DEFAULT_MAPPING = [
     templateName: "216000.xlsx",
     values: [
       { from: "216000", to: "216000", type: "sheet" },
-      { from: "216000-1", to: "1", type: "sheet" }
+      { from: "216000-TB", to: "TB", type: "sheet" }
     ]
   },
   {
     templateName: "217500.xlsx",
     values: [
       { from: "217500", to: "217500", type: "sheet" },
-      { from: "217500-1", to: "1", type: "sheet" },
+      { from: "217500-TB", to: "TB", type: "sheet" },
       { from: "217500-Jan", to: "Jan", type: "sheet" },
       { from: "217500-Feb", to: "Feb", type: "sheet" },
       { from: "217500-Mar", to: "Mar", type: "sheet" },
@@ -154,7 +154,7 @@ export const DEFAULT_MAPPING = [
     templateName: "274000.xlsx",
     values: [
       { from: "274000", to: "274000", type: "sheet" },
-      { from: "274000-1", to: "1", type: "sheet" }
+      { from: "274000-TB", to: "TB", type: "sheet" }
     ]
   },
   {

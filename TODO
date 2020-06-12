@@ -17,6 +17,6 @@ Todo:
   ✔ conversion relation 编辑Mapping @started(20-06-01 19:35) @done(20-06-02 15:38) @lasted(20h3m50s)
   ✔ refactor mapping constructor @done(20-06-04 00:20)
   ✔ add mapping @started(20-06-03 10:39) @done(20-06-04 00:51) @lasted(14h12m24s)
-  ☐ fix transform range err
+  ✔ fix transform range err @done(20-06-10 13:34)
   ☐ can add value for to cell
   ☐ vue test import excel @started(20-05-28 21:38)

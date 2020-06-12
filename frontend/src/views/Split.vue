@@ -1,7 +1,8 @@
 <template>
-  <div class="home">
+  <div class="container">
+    <div class="description"><b>"split"</b> excel into multiple excel 🧬</div>
     <h1 v-if="!!message" class="message">{{ message }}</h1>
-    <div>
+    <div v-if="files.length <= 0" class="select-file-container">
       <input
         type="file"
         id="file"
@@ -10,39 +11,9 @@
         class="inputfile"
       />
       <label class="select-file" for="file">Choose a file</label>
-      <label class="configMapping" v-on:click="isEditMapping = true"
-        >Config</label
-      >
+      <label class="configBtn" v-on:click="isEditMapping = true">Config</label>
     </div>
-    <div class="loader" v-show="isLoading">Processing...</div>
     <loader v-show="isLoading" class="loader"></loader>
-    <div v-if="!!files.length" class="downloadOperate">
-      <a class="downloadAll" v-on:click="downloadAll" href="javascript:void(0)"
-        >Download all</a
-      >
-      <input type="checkbox" id="prefixing" v-model="isPrefixing" />
-      <label for="prefixing" class="prefixing">enable prefixing</label>
-    </div>
-    <div v-if="isPrefixing" class="filePrefix">
-      <input
-        v-model="prefixFileName"
-        type="text"
-        placeholder="file name prefix"
-      />
-    </div>
-    <ul v-if="!!files.length" class="results">
-      <li v-for="file in files" :key="file.key">
-        <span>{{ prefixFileName }}{{ file.name }}</span>
-        <span class="status-success">success</span>
-        <a
-          href="javascript:void(0);"
-          class="download"
-          v-on:click="download(file.key)"
-          >download</a
-        >
-      </li>
-    </ul>
-    <h1 class="slogan">Smart <strong>Excel</strong> Tools</h1>
     <modal
       v-if="isEditMapping"
       v-on:submit="onEditConfig"
@@ -51,7 +22,7 @@
       <template v-slot:header>
         <h1>Config Mapping</h1>
         <input type="checkbox" id="isJSON" v-model="isJSON" />
-        <label for="isJSON" class="isJSON">switch JSON</label>
+        <label for="isJSON" class="isJSON configBtn">switch JSON</label>
       </template>
       <template v-slot:body>
         <div class="configMapping">
@@ -153,6 +124,38 @@
         </div>
       </template>
     </modal>
+    <div v-if="!!files.length" class="result">
+      <div class="downloadOperate">
+        <a
+          class="downloadAll"
+          v-on:click="downloadAll"
+          href="javascript:void(0)"
+          >Download all</a
+        >
+        <input type="checkbox" id="prefixing" v-model="isPrefixing" />
+        <label for="prefixing" class="prefixing">enable prefixing</label>
+      </div>
+      <div v-if="isPrefixing" class="filePrefix">
+        <input
+          v-model="prefixFileName"
+          type="text"
+          placeholder="file name prefix"
+        />
+      </div>
+      <ul v-if="!!files.length" class="resultList">
+        <li v-for="file in files" :key="file.key">
+          <span>{{ prefixFileName }}{{ file.name }}</span>
+          <span class="status-success">success</span>
+          <a
+            href="javascript:void(0);"
+            class="download"
+            v-on:click="download(file.key)"
+            >download</a
+          >
+        </li>
+      </ul>
+      <a class="button" v-on:click="restart">ReStart</a>
+    </div>
   </div>
 </template>
 
@@ -161,7 +164,7 @@ import Loader from "@/components/loader";
 import Modal from "@/components/modal";
 import * as Excel from "exceljs";
 import { saveAs } from "file-saver";
-import { validateFrom, fillData } from "@/service/transform";
+import { fillData } from "@/service/transform";
 import { isXlsx } from "@/util/file";
 import _ from "lodash";
 import {
@@ -171,7 +174,7 @@ import {
 } from "@/service/mapping";
 
 export default {
-  name: "Transform",
+  name: "Split",
   components: {
     Loader,
     Modal
@@ -182,7 +185,6 @@ export default {
         return JSON.stringify(this.mappings);
       },
       set: function(newValue) {
-        console.log("newValue: ", newValue);
         try {
           this.mappings = JSON.parse(newValue);
         } catch (e) {
@@ -207,6 +209,9 @@ export default {
     };
   },
   methods: {
+    restart() {
+      this.files = [];
+    },
     addMapping() {
       this.mappings.push({
         type: "string",
@@ -223,10 +228,10 @@ export default {
       );
     },
     onEditConfig() {
-      console.log(this.mappings);
       this.isEditMapping = false;
     },
     downloadAll() {
+      console.log("this.files", this.files);
       if (this.files.length > 0) {
         this.files.forEach(file => this.download(file.key));
       }
@@ -239,7 +244,10 @@ export default {
         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
       const blob = new Blob([buffer], { type: fileType });
       const fileName = `${this.prefixFileName}${file.name}`;
+      console.log("download file", file);
+      console.log("download fileName", fileName);
       saveAs(blob, fileName);
+      await new Promise(r => setTimeout(r, 1000));
     },
     handleFileUpload() {
       this.message = "";
@@ -248,27 +256,20 @@ export default {
       const file = this.$refs.file.files[0];
       const reader = new FileReader();
       const mappings = reverseTransformMappings(this.mappings);
-      console.log("mappings: ", mappings);
       reader.onload = async () => {
         const fromWorkBook = new Excel.Workbook();
         await fromWorkBook.xlsx.load(reader.result);
-        this.message = validateFrom(fromWorkBook, mappings);
-        if (!this.message) {
-          mappings.forEach(async mapping => {
-            const toWorkbook = new Excel.Workbook();
-            const resultWrokbook = fillData(fromWorkBook, toWorkbook, mapping);
-            this.files.push({
-              key: _.get(mapping, "templateName"),
-              name: _.get(mapping, "templateName"),
-              workbook: resultWrokbook,
-              buffer: resultWrokbook.xlsx.writeBuffer()
-            });
-            if (this.files.length === mappings.length) this.isLoading = false;
+        mappings.forEach(async mapping => {
+          const toWorkbook = new Excel.Workbook();
+          const resultWrokbook = fillData(fromWorkBook, toWorkbook, mapping);
+          this.files.push({
+            key: _.get(mapping, "templateName"),
+            name: _.get(mapping, "templateName"),
+            workbook: resultWrokbook,
+            buffer: resultWrokbook.xlsx.writeBuffer()
           });
-          console.log("parsing success", this.files);
-        } else {
-          this.isLoading = false;
-        }
+          if (this.files.length === mappings.length) this.isLoading = false;
+        });
       };
       if (isXlsx(file.name)) {
         reader.readAsArrayBuffer(file);
@@ -282,40 +283,16 @@ export default {
 </script>
 <style scoped lang="less">
 @import "../css/color.less";
-.home {
+@import "../css/table.less";
+@import "../css/common.less";
+.container {
+  padding-top: 40px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: calc(100vh - 80px);
-  background-color: mintcream;
-}
-.inputfile {
-  width: 0.1px;
-  height: 0.1px;
-  opacity: 0;
-  overflow: hidden;
-  position: absolute;
-  z-index: -1;
-}
-.inputfile + label {
-  width: 200px;
-  font-size: 1.25em;
-  font-weight: 700;
-  color: white;
-  background-color: rgb(50, 49, 49);
-  display: inline-block;
-  padding: 0.4em;
-  border-radius: 3px;
-}
-
-.inputfile:focus + label,
-.inputfile + label:hover {
-  background-color: rgb(36, 36, 36);
-}
-.inputfile + label {
-  cursor: pointer;
-  margin-right: 8px;
+  background: no-repeat center/750px
+    url("../assets/data_arranging_flatline.png");
 }
 .slogan {
   font-size: 44px;
@@ -361,8 +338,16 @@ export default {
   font-weight: 600;
   text-decoration: none;
 }
-.results {
-  margin-top: 16px;
+.result {
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.7);
+}
+.resultList {
+  margin: 16px;
   border: 1px solid gray;
   padding: 8px;
   border-radius: 2px;
@@ -381,112 +366,13 @@ export default {
       padding: 1px 5px;
     }
     .download {
-      color: @primary-color;
+      text-decoration: underline;
+      cursor: pointer;
     }
   }
-}
-.message {
-  margin-bottom: 25px;
-  padding: 8px;
-  border: 1px solid #ffccc7;
-  background-color: #fff2f0;
-  color: black;
-  border-radius: 3px;
-}
-
-.configMapping,
-.prefixing {
-  color: @primary-color;
-  font-size: 14px;
-  padding: 4px;
-  border-radius: 2px;
-  cursor: pointer;
-}
-.loader {
-  margin-top: 24px;
 }
 .configMapping {
   height: calc(100vh - 500px);
   overflow-y: scroll;
-  table {
-    width: 100%;
-  }
-  a {
-    color: @primary-color;
-    border-radius: 2px;
-    padding: 2px 4px;
-    text-decoration: none;
-    &.addMapping {
-      margin-top: 5px;
-      width: 100px;
-      height: 20px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-    }
-  }
-  tr {
-    border-top: 1px solid #d9d9d9;
-    border-bottom: 1px solid #d9d9d9;
-  }
-  th[rowspan] {
-    vertical-align: middle;
-  }
-  thead tr,
-  td,
-  th {
-    padding: 6px 4px;
-  }
-  tr,
-  td,
-  th {
-    padding: 12px 4px;
-  }
-  input,
-  select {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-variant: tabular-nums;
-    list-style: none;
-    -webkit-font-feature-settings: "tnum";
-    font-feature-settings: "tnum";
-    position: relative;
-    display: inline-block;
-    min-width: 0;
-    padding: 4px 11px;
-    color: rgba(0, 0, 0, 0.65);
-    font-size: 14px;
-    line-height: 1.5715;
-    background-color: #fff;
-    background-image: none;
-    border: 1px solid #d9d9d9;
-    border-radius: 2px;
-    -webkit-transition: all 0.3s;
-    transition: all 0.3s;
-  }
-  .values {
-    display: flex;
-    > div {
-      flex-grow: 1;
-    }
-  }
-  .imageType {
-    display: flex;
-    width: 85%;
-    input {
-      font-size: 10px;
-      padding: 2px 4px;
-    }
-    > div {
-      display: flex;
-      justify-content: center;
-      align-items: flex-end;
-      flex-direction: column;
-      input {
-        width: 50%;
-      }
-    }
-  }
 }
 </style>

@@ -1,0 +1,78 @@
+.container {
+    padding: 40px 0px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    min-height: calc(100vh - 250px);
+    position: relative;
+    .description{
+        position: absolute;
+        top: 0;
+        font-size: 20px;
+        padding: 25px 0;
+        width: 100%;
+        background-color: #eee;
+        b{
+          color: #2c3e50;
+          font-weight: 800;
+        }
+    }
+    .select-file-container{
+        background-color: rgba(212, 212, 212, 0.8);
+        padding: 12px;
+        border-radius: 4px;
+    }
+}
+.configBtn,
+.prefixing {
+  font-size: 14px;
+  padding: 4px;
+  border-radius: 2px;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.inputfile {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+  }
+  .inputfile + label {
+    width: 200px;
+    font-size: 1.25em;
+    font-weight: 700;
+    color: white;
+    background-color: rgb(50, 49, 49);
+    display: inline-block;
+    padding: 0.6em 1em;
+    border-radius: 3px;
+  }
+  
+  .inputfile:focus + label,
+  .inputfile + label:hover {
+    background-color: rgb(36, 36, 36);
+  }
+  .inputfile + label {
+    cursor: pointer;
+    margin-right: 8px;
+  }
+  .button{
+    background-color: white;
+    color: #ffd732;
+    cursor: pointer;
+    padding: 8px;
+    text-decoration: underline;
+    border: 1px solid #ffd732;
+  }
+  .message {
+    margin-bottom: 25px;
+    padding: 8px;
+    border: 1px solid #ffccc7;
+    background-color: #fff2f0;
+    color: black;
+    border-radius: 3px;
+  }
