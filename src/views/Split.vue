@@ -163,6 +163,7 @@
 import Loader from "@/components/loader";
 import Modal from "@/components/modal";
 import * as Excel from "exceljs";
+import * as JSZip from "jszip";
 import { saveAs } from "file-saver";
 import { fillData } from "@/service/transform";
 import { isXlsx } from "@/util/file";
@@ -231,12 +232,39 @@ export default {
       this.isEditMapping = false;
     },
     downloadAll() {
-      console.log("this.files", this.files.forEach(file => console.log(file.key, file.name)));
-      if (this.files.length > 0) {
-        this.files.forEach(file => this.download(file.key));
+      const filesLength = this.files.length;
+      if (filesLength > 0) {
+        this.isLoading = true;
+        const zip = new JSZip();
+        new Promise(resovle => {
+          this.files.forEach(async ({ key }, index) => {
+            const { fileName, blob } = await this.getFileEntity(key);
+            zip.file(fileName, blob);
+            if (index === filesLength - 1) resovle();
+          });
+        })
+          .then(() => {
+            return zip.generateAsync({ type: "blob" });
+          })
+          .then(content =>  {
+            const date = new Date();
+            saveAs(
+              content,
+              `excel-io-${date.getFullYear()}${date.getMonth() +
+                1}${date.getDate()}${date.getHours()}${date.getMinutes()}`
+            );
+            this.isLoading = false;
+          })
+          .catch(err => {
+            console.error(err);
+            this.message = "download failed";
+            this.isLoading = false;
+          });
+      } else {
+        this.message = "no files";
       }
     },
-    async download(key) {
+    async getFileEntity(key) {
       const file = this.files.filter(f => f.key === key)[0];
       const workbook = file.workbook;
       const buffer = await workbook.xlsx.writeBuffer();
@@ -244,8 +272,10 @@ export default {
         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
       const blob = new Blob([buffer], { type: fileType });
       const fileName = `${this.prefixFileName}${file.name}`;
-      console.log("download file", file);
-      console.log("download fileName", fileName);
+      return { fileName, blob };
+    },
+    async download(key) {
+      const { fileName, blob } = await this.getFileEntity(key);
       saveAs(blob, fileName);
     },
     handleFileUpload() {

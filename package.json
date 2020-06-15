@@ -13,6 +13,7 @@
     "core-js": "^3.6.4",
     "exceljs": "^3.9.0",
     "file-saver": "^2.0.2",
+    "jszip": "^3.5.0",
     "lodash": "^4.17.15",
     "moment": "^2.26.0",
     "register-service-worker": "^1.7.1",
