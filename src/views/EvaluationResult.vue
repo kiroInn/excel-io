@@ -81,7 +81,7 @@ export default {
       return _.isNumber(x) ? Number.parseFloat(x).toFixed(2) : x;
     },
     isValidate(value1, value2) {
-      return this.financial(value1) - this.financial(value2) <= this.margin;
+      return Math.abs(this.financial(value1) - this.financial(value2)) <= this.margin;
     }
   }
 };
