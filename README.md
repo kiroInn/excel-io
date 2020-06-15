@@ -6,6 +6,7 @@
 - vue-resource
 - FileSaver： https://github.com/eligrey/FileSaver.js
 - sheetjs: https://github.com/SheetJS/sheetjs
+- jszip: https://stuk.github.io/jszip/
 - ui design: https://www.manypixels.co
   
 enhancement excel copy sheet
