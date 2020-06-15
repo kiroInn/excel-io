@@ -157,4 +157,8 @@ export default {
   height: calc(100vh - 500px);
   overflow-y: scroll;
 }
+table tr:first-child {
+  position: sticky;
+  top: 0;
+}
 </style>

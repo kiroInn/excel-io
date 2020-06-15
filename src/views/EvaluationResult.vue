@@ -8,18 +8,20 @@
       status margin: <input type="number" v-model="margin" />
     </div>
     <table>
-      <tr>
-        <th>Code</th>
-        <th>Current</th>
-        <th>Totals</th>
-        <th>Balance Per</th>
-        <th>Variance</th>
-        <th v-if="isShowDollar">￥</th>
-        <th v-if="isShowDollar">Actual</th>
-        <th>Current-Balance Per</th>
-        <th>Totals-Balance Per</th>
-        <th>Status</th>
-      </tr>
+      <thead>
+        <tr>
+          <th>Code</th>
+          <th>Current</th>
+          <th>Totals</th>
+          <th>Balance Per</th>
+          <th>Variance</th>
+          <th v-if="isShowDollar">￥</th>
+          <th v-if="isShowDollar">Actual</th>
+          <th>Current-Balance Per</th>
+          <th>Totals-Balance Per</th>
+          <th>Status</th>
+        </tr>
+      </thead>
       <tr v-for="(values, index) in dataArray" :key="index">
         <td>{{ values[1] }}</td>
         <td>{{ financial(values[0]) }}</td>
@@ -105,6 +107,11 @@ export default {
   td.success {
     background-color: #4caf50;
     color: white;
+  }
+  thead th { 
+    position: sticky; 
+    top: 0; 
+    background-color: white;
   }
 }
 </style>
