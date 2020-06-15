@@ -43,6 +43,7 @@ export function parse(
       const sheetName = _.get(content.split(":"), 1);
       if (index === 1) rowResult.push(fileName);
       const addressExp = _.get(content.split(":"), 2);
+      const isNegative = _.get(content.split(":"), 3) === "isNegative";
       const workbook: Excel.Workbook | undefined = _.get(
         _.find(files, ({ fileName: name }) => !!name.match(new RegExp(`${fileName}\\.`, 'g'))),
         "workbook"
@@ -58,7 +59,9 @@ export function parse(
           value = _.get(cell, "value");
         }
       }
-      rowResult.push(_.isObject(value) ? _.get(value, "result", 0) : value);
+      value = _.isObject(value) ? _.get(value, "result", 0) : value;
+      value = isNegative ? `-${value}` : value;
+      rowResult.push(value);
     });
     result.push(rowResult);
   });
@@ -134,7 +137,7 @@ export const DEFAULT_EXPRESS = [
   ],
   [
     "TB_BU_FN:Sheet1:N${B=200000}",
-    "CNCDU-200000:200000:C${B=Balance per subledger}",
+    "CNCDU-200000:200000:C${B=Balance per subledger}:isNegative",
     "CNCDU-200000:200000:C${B=Balance per GL}",
     "CNCDU-200000:200000:C${B=Variance}"
   ],
