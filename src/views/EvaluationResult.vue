@@ -5,6 +5,7 @@
       <label for="isShowAll" class="isShowAll configBtn">enable show all</label>
       <input type="checkbox" id="isShowDollar" v-model="isShowDollar" />
       <label for="isShowDollar" class="configBtn">enable show dollar</label>
+      status margin: <input type="number" v-model="margin" />
     </div>
     <table>
       <tr>
@@ -71,7 +72,8 @@ export default {
   data() {
     return {
       isShowAll: false,
-      isShowDollar: false
+      isShowDollar: false,
+      margin: 0.5,
     };
   },
   methods: {
@@ -79,7 +81,7 @@ export default {
       return _.isNumber(x) ? Number.parseFloat(x).toFixed(2) : x;
     },
     isValidate(value1, value2) {
-      return this.financial(value1) - this.financial(value2) == 0;
+      return this.financial(value1) - this.financial(value2) <= this.margin;
     }
   }
 };
