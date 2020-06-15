@@ -231,7 +231,7 @@ export default {
       this.isEditMapping = false;
     },
     downloadAll() {
-      console.log("this.files", this.files);
+      console.log("this.files", this.files.forEach(file => console.log(file.key, file.name)));
       if (this.files.length > 0) {
         this.files.forEach(file => this.download(file.key));
       }
@@ -247,7 +247,6 @@ export default {
       console.log("download file", file);
       console.log("download fileName", fileName);
       saveAs(blob, fileName);
-      await new Promise(r => setTimeout(r, 1000));
     },
     handleFileUpload() {
       this.message = "";
