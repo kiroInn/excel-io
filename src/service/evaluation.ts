@@ -13,7 +13,6 @@ function parseCellPosition(
     const express = _.get(/\${(.*?)}/.exec(addressStr), 1);
     const expressPrefix = _.get(express?.split("="), 0);
     const expressValues = _.get(express?.split("="), 1)?.split("|");
-    console.log("expressPrefix:", expressPrefix);
     rowIndex = _.findIndex(
       workSheet.getColumn(expressPrefix || "").values,
       value => {
@@ -45,7 +44,7 @@ export function parse(
       if (index === 1) rowResult.push(fileName);
       const addressExp = _.get(content.split(":"), 2);
       const workbook: Excel.Workbook | undefined = _.get(
-        _.find(files, ({ fileName: name }) => _.includes(name, fileName)),
+        _.find(files, ({ fileName: name }) => !!name.match(new RegExp(`${fileName}\\.`, 'g'))),
         "workbook"
       );
       let value: CellValue | string = EXPRESS_VALUE_NOT_FOUND;
@@ -234,5 +233,5 @@ export const DEFAULT_EXPRESS = [
     "897600:897600:AC${D=Totals}",
     "897600:897600:AC${D=CNCDU|CNXAU|CNBSU|CNWHU|CNSZU}",
     "897600:897600:AC${D=Variance}"
-  ]
+  ],
 ];
