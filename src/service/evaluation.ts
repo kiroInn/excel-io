@@ -58,9 +58,9 @@ export function parse(
           );
           value = _.get(cell, "value");
         }
+        value = _.isObject(value) ? _.get(value, "result", 0) : value;
+        value = isNegative && value !== EXPRESS_VALUE_NOT_FOUND ? `-${value}` : value;
       }
-      value = _.isObject(value) ? _.get(value, "result", 0) : value;
-      value = isNegative ? `-${value}` : value;
       rowResult.push(value);
     });
     result.push(rowResult);
@@ -305,7 +305,7 @@ export const DEFAULT_EXPRESS = [
   ],
   [
     "TB_BU_FN:Sheet1:O${B=200000}",
-    "CNBSU-200000:200000:C${B=Balance per subledger}",
+    "CNBSU-200000:200000:C${B=Balance per subledger}:isNegative",
     "CNBSU-200000:200000:C${B=Balance per GL}",
     "CNBSU-200000:200000:C${B=Variance}"
   ],
