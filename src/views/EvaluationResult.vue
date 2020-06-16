@@ -1,5 +1,9 @@
 <template>
   <div class="result-container">
+    <div class="result-count">
+      <div>imported count: <b>{{importCount - 1}}</b></div>
+      <div>success count:<b>{{dataArray.length}}</b></div>
+    </div>
     <div class="config">
       <input type="checkbox" id="isShowAll" v-model="isShowAll" />
       <label for="isShowAll" class="isShowAll configBtn">enable show all</label>
@@ -56,7 +60,7 @@ import _ from "lodash";
 
 export default {
   name: "EvaluationResult",
-  props: ["dataSource"],
+  props: ["dataSource", "importCount"],
   computed: {
     dataArray() {
       if (this.isShowAll) {
@@ -96,6 +100,16 @@ export default {
 .result-container {
   padding: 50px 50px;
   background-color: rgba(255, 255, 255, 0.8);
+  .result-count{
+    display: flex;
+    justify-content: center;
+    div{
+      margin: 6px;
+      b{
+        font-weight: 700;
+      }
+    }
+  }
   .config {
     display: flex;
     justify-content: center;

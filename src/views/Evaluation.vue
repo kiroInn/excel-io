@@ -52,6 +52,7 @@
     <evaluation-result
       v-if="dataSource.length > 0"
       :data-source="dataSource"
+      :import-count="importCount"
     ></evaluation-result>
     <a class="button" v-if="dataSource.length > 0" v-on:click="restart"
       >ReStart</a
@@ -83,7 +84,8 @@ export default {
       colums: [],
       columName: "",
       expressMatrix: [],
-      dataSource: []
+      dataSource: [],
+      importCount: 0,
     };
   },
   created() {
@@ -92,10 +94,12 @@ export default {
   methods: {
     restart() {
       this.dataSource = [];
+      this.importCount = 0;
     },
     handleFileUpload() {
       this.message = "";
       this.dataSource = [];
+      this.importCount = 0;
       this.isLoading = true;
       const files = this.$refs.file.files;
       new Promise((resolve, reject) => {
@@ -110,6 +114,7 @@ export default {
               fileName: file.name,
               workbook
             });
+            this.importCount = files.length;
             if (result.length === files.length) resolve(result);
           };
           if (isXlsx(file.name)) {
