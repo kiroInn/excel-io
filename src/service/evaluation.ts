@@ -3,10 +3,10 @@ import _ from "lodash";
 
 export const EXPRESS_VALUE_NOT_FOUND = "❓";
 function parseCellPosition(
-  workSheet: Excel.Worksheet,
-  addressStr: string
-): { columnIndex: string | number; rowIndex: string | number } {
-  let columnIndex: string | number = -1,
+  workSheet:Excel.Worksheet,
+  addressStr:string
+):{ columnIndex:string | number; rowIndex:string | number } {
+  let columnIndex:string | number = -1,
     rowIndex = -1;
   if (workSheet && addressStr) {
     columnIndex = _.get(addressStr.split("$"), 0);
@@ -32,42 +32,42 @@ function parseCellPosition(
 }
 
 export function parse(
-  files: [{ fileName: string; workbook: Excel.Workbook }],
-  variableArray: []
-): [][] {
-  const result: any[] = [];
+  files:[{ fileName:string; workbook:Excel.Workbook }],
+  variableArray:[]
+):[][] {
+  const result:any[] = [];
   _.each(variableArray, variables => {
-    const rowResult: any[] = [];
-    _.each(variables, (content: string, index) => {
+    const rowResult:any[] = [];
+    _.each(variables, (content:string, index) => {
       const fileName = _.get(content.split(":"), 0);
       const sheetName = _.get(content.split(":"), 1);
       if (index === 1) rowResult.push(fileName);
       const addressExp = _.get(content.split(":"), 2);
       const isNegative = _.get(content.split(":"), 3) === "isNegative";
-      const workbook: Excel.Workbook | undefined = _.get(
+      const workbook:Excel.Workbook | undefined = _.get(
         _.find(
           files,
-          ({ fileName: name }) =>
+          ({ fileName:name }) =>
             !!name.match(new RegExp(`${fileName}\\.`, "g"))
         ),
         "workbook"
       );
-      let value: CellValue | string = EXPRESS_VALUE_NOT_FOUND;
+      let value:CellValue | string = EXPRESS_VALUE_NOT_FOUND;
       if (workbook) {
-        const workSheet: Excel.Worksheet = workbook.getWorksheet(sheetName);
+        const workSheet:Excel.Worksheet = workbook.getWorksheet(sheetName);
         const address = parseCellPosition(workSheet, addressExp);
         if (address.rowIndex != -1) {
-          const cell: Excel.Cell = workSheet.getCell(
+          const cell:Excel.Cell = workSheet.getCell(
             `${address.columnIndex}${address.rowIndex}`
           );
           value = _.get(cell, "value");
         }
-        value = _.isObject(value) ? _.get(value, "result", 0) : value;
+        value = _.isObject(value) ? _.get(value, "result", 0) :value;
         try {
           value =
             isNegative && value !== EXPRESS_VALUE_NOT_FOUND
               ? Number.parseFloat(`-${value}`).toFixed(2)
-              : value;
+              :value;
         } catch (err) {
           console.error(`${sheetName} ${address} expression rule is err.`);
         }
@@ -516,5 +516,193 @@ export const DEFAULT_EXPRESS = [
     "CNSZU-897600:897600:AC${D=Totals}",
     "CNSZU-897600:897600:AC${D=CNCDU|CNXAU|CNBSU|CNWHU|CNSZU}",
     "CNSZU-897600:897600:AC${D=Variance}"
+  ],
+  [
+    "TB_BU_FN:Sheet1:R${B=106440}",
+    "CNWHU-106440:Reconciliation:C${B=BANK BALANCE (AS PER BANK STATEMENT)}",
+    "CNWHU-106440:Reconciliation:C${B=BOOK BALANCE}",
+    "CNWHU-106440:Reconciliation:C${B=VARIANCE}",
+    "TB_BU:Sheet1:R${B=106440}",
+    "CNWHU-106440:Reconciliation:C${B=BALANCE PER THE GL (FUNCTIONAL CURRENCY)}"
+  ],
+  [
+    "TB_BU_FN:Sheet1:R${B=106450}",
+    "CNWHU-106450:Reconciliation:C${B=BALANCE PER THE GL (FUNCTIONAL CURRENCY)}",
+    "CNWHU-106450:Reconciliation:C${B=BOOK BALANCE IN (FUNCTIONAL CURRENCY)}",
+    "CNWHU-106450:Reconciliation:C${B=VARIANCE}",
+    "TB_BU:Sheet1:R${B=106450}",
+    "CNWHU-106450:Reconciliation:C${B=BANK BALANCE (AS PER BANK STATEMENT)}"
+  ],
+  [
+    "TB_BU_FN:Sheet1:R${B=106460}",
+    "CNWHU-106460:Reconciliation:C${B=BALANCE PER THE GL (FUNCTIONAL CURRENCY)}",
+    "CNWHU-106460:Reconciliation:C${B=BOOK BALANCE IN (FUNCTIONAL CURRENCY)}",
+    "CNWHU-106460:Reconciliation:C${B=VARIANCE}",
+    "TB_BU:Sheet1:R${B=106460}",
+    "CNWHU-106460:Reconciliation:C${B=BANK BALANCE (AS PER BANK STATEMENT)}"
+  ],
+  [
+    "TB_BU_FN:Sheet1:R${B=106470}",
+    "CNWHU-106470:Reconciliation:C${B=BANK BALANCE (AS PER BANK STATEMENT)}",
+    "CNWHU-106470:Reconciliation:C${B=BOOK BALANCE}",
+    "CNWHU-106470:Reconciliation:C${B=VARIANCE}",
+    "TB_BU:Sheet1:R${B=106400}",
+    "CNWHU-106470:Reconciliation:C${B=BALANCE PER THE GL (FUNCTIONAL CURRENCY)}"
+  ],
+  [
+    "TB_BU_FN:Sheet1:R${B=112000}",
+    "CNWHU-112000:112000:C${B=Totals}",
+    "CNWHU-112000:112000:C${B=CNCDU|CNXAU|CNBSU|CNWHU|CNSZU}",
+    "CNWHU-112000:112000:C${B=Variance}"
+  ],
+  [
+    "TB_BU_FN:Sheet1:R${B=119000}",
+    "CNWHU-119000:119000:C${B=Totals}",
+    "CNWHU-119000:119000:C${B=CNCDU|CNXAU|CNBSU|CNWHU|CNSZU}",
+    "CNWHU-119000:119000:C${B=Variance}"
+  ],
+  [
+    "TB_BU_FN:Sheet1:R${B=120000}",
+    "CNWHU-120000:120000:AX${G=Totals}",
+    "CNWHU-120000:120000:AX${G=CNCDU|CNXAU|CNBSU|CNWHU|CNSZU}",
+    "CNWHU-120000:120000:AX${G=Check}"
+  ],
+  [
+    "TB_BU_FN:Sheet1:R${B=191000}",
+    "CNWHU-191000:191000:C${B=Totals}",
+    "CNWHU-191000:191000:C${B=CNCDU|CNXAU|CNBSU|CNWHU|CNSZU}",
+    "CNWHU-191000:191000:C${B=Variance}"
+  ],
+  [
+    "TB_BU_FN:Sheet1:R${B=196000}",
+    "CNWHU-196000:196000:C${B=Totals}",
+    "CNWHU-196000:196000:C${B=CNCDU|CNXAU|CNBSU|CNWHU|CNSZU}",
+    "CNWHU-196000:196000:C${B=Variance}"
+  ],
+  [
+    "TB_BU_FN:Sheet1:R${B=200000}",
+    "CNWHU-200000:200000:C${B=Balance per subledger}:isNegative",
+    "CNWHU-200000:200000:C${B=Balance per GL}",
+    "CNWHU-200000:200000:C${B=Variance}"
+  ],
+  [
+    "TB_BU_FN:Sheet1:R${B=205000}",
+    "CNWHU-205000:205000:AC${D=Totals}",
+    "CNWHU-205000:205000:AC${D=CNCDU|CNXAU|CNBSU|CNWHU|CNSZU}",
+    "CNWHU-205000:205000:AC${D=Variance}"
+  ],
+  [
+    "TB_BU_FN:Sheet1:R${B=210000}",
+    "CNWHU-210000:210000:AC${D=Totals}",
+    "CNWHU-210000:210000:AC${D=CNCDU|CNXAU|CNBSU|CNWHU|CNSZU}",
+    "CNWHU-210000:210000:AC${D=Variance}"
+  ],
+  [
+    "TB_BU_FN:Sheet1:R${B=214000}",
+    "CNWHU-214000:214000:AC${D=Totals}",
+    "CNWHU-214000:214000:AC${D=CNCDU|CNXAU|CNBSU|CNWHU|CNSZU}",
+    "CNWHU-214000:214000:AC${D=Variance}"
+  ],
+  [
+    "TB_BU_FN:Sheet1:R${B=215000}",
+    "CNWHU-215000:215000:AC${D=Totals}",
+    "CNWHU-215000:215000:AC${D=CNCDU|CNXAU|CNBSU|CNWHU|CNSZU}",
+    "CNWHU-215000:215000:AC${D=Variance}"
+  ],
+  [
+    "TB_BU_FN:Sheet1:R${B=215100}",
+    "CNWHU-215100:215100:AC${D=Totals}",
+    "CNWHU-215100:215100:AC${D=CNCDU|CNXAU|CNBSU|CNWHU|CNSZU}",
+    "CNWHU-215100:215100:AC${D=Variance}"
+  ],
+  [
+    "TB_BU_FN:Sheet1:R${B=215300}",
+    "CNWHU-215300:215300:AC${D=Totals}",
+    "CNWHU-215300:215300:AC${D=CNCDU|CNXAU|CNBSU|CNWHU|CNSZU}",
+    "CNWHU-215300:215300:AC${D=Variance}"
+  ],
+  [
+    "TB_BU_FN:Sheet1:R${B=215600}",
+    "CNWHU-215600:215600:AC${D=Totals}",
+    "CNWHU-215600:215600:AC${D=CNCDU|CNXAU|CNBSU|CNWHU|CNSZU}",
+    "CNWHU-215600:215600:AC${D=Variance}"
+  ],
+  [
+    "TB_BU_FN:Sheet1:R${B=216000}",
+    "CNWHU-216000:216000:AC${D=Totals}",
+    "CNWHU-216000:216000:AC${D=CNCDU|CNXAU|CNBSU|CNWHU|CNSZU}",
+    "CNWHU-216000:216000:AC${D=Variance}"
+  ],
+  [
+    "TB_BU_FN:Sheet1:R${B=217500}",
+    "CNWHU-217500:217500:AC${D=Totals}",
+    "CNWHU-217500:217500:AC${D=CNCDU|CNXAU|CNBSU|CNWHU|CNSZU}",
+    "CNWHU-217500:217500:AC${D=Variance}"
+  ],
+  [
+    "TB_BU_FN:Sheet1:R${B=221850}",
+    "CNWHU-221850:221850:AC${D=Totals}",
+    "CNWHU-221850:221850:AC${D=CNCDU|CNXAU|CNBSU|CNWHU|CNSZU}",
+    "CNWHU-221850:221850:AC${D=Variance}"
+  ],
+  [
+    "TB_BU_FN:Sheet1:R${B=230000}",
+    "CNWHU-230000:230000:AC${D=Totals}",
+    "CNWHU-230000:230000:AC${D=CNCDU|CNXAU|CNBSU|CNWHU|CNSZU}",
+    "CNWHU-230000:230000:AC${D=Variance}"
+  ],
+  [
+    "TB_BU_FN:Sheet1:R${B=235000}",
+    "CNWHU-235000:235000:AC${D=Totals}",
+    "CNWHU-235000:235000:AC${D=CNCDU|CNXAU|CNBSU|CNWHU|CNSZU}",
+    "CNWHU-235000:235000:AC${D=Variance}"
+  ],
+  [
+    "TB_BU_FN:Sheet1:R${B=235100}",
+    "CNWHU-235100:235100:AC${D=Totals}",
+    "CNWHU-235100:235100:AC${D=CNCDU|CNXAU|CNBSU|CNWHU|CNSZU}",
+    "CNWHU-235100:235100:AC${D=Variance}"
+  ],
+  [
+    "TB_BU_FN:Sheet1:R${B=274000}",
+    "CNWHU-274000:274000:AC${D=Totals}",
+    "CNWHU-274000:274000:AC${D=CNCDU|CNXAU|CNBSU|CNWHU|CNSZU}",
+    "CNWHU-274000:274000:AC${D=Variance}"
+  ],
+  [
+    "TB_BU_FN:Sheet1:R${B=897100}",
+    "CNWHU-897100:897100:AC${D=Totals}",
+    "CNWHU-897100:897100:AC${D=CNCDU|CNXAU|CNBSU|CNWHU|CNSZU}",
+    "CNWHU-897100:897100:AC${D=Variance}"
+  ],
+  [
+    "TB_BU_FN:Sheet1:R${B=897600}",
+    "CNWHU-897600:897600:AC${D=Totals}",
+    "CNWHU-897600:897600:AC${D=CNCDU|CNXAU|CNBSU|CNWHU|CNSZU}",
+    "CNWHU-897600:897600:AC${D=Variance}"
+  ],
+  [
+    "TB_BU_FN:Sheet1:R${B=897500}",
+    "CNWHU-897500:897500:AC${D=Totals}",
+    "CNWHU-897500:897500:AC${D=CNCDU|CNXAU|CNBSU|CNWHU|CNSZU}",
+    "CNWHU-897500:897500:AC${D=Variance}"
+  ],
+  [
+  "TB_BU_FN:Sheet1:R${B=113400}",
+    "CNWHU Intercompany Balance Sheet Reconciliation:113400:C${B=Totals}",
+    "CNWHU Intercompany Balance Sheet Reconciliation:113400:C${B=CNCDU|CNXAU|CNBSU|CNWHU|CNSZU}",
+    "CNWHU Intercompany Balance Sheet Reconciliation:113400:C${B=Variance}"
+  ],
+ [
+  "TB_BU_FN:Sheet1:R${B=202000}",
+    "CNWHU Intercompany Balance Sheet Reconciliation:202000:C${B=Totals}:isNegative",
+    "CNWHU Intercompany Balance Sheet Reconciliation:202000:C${B=CNCDU|CNXAU|CNBSU|CNWHU|CNSZU}",
+    "CNWHU Intercompany Balance Sheet Reconciliation:202000:C${B=Variance}"
+ ],
+ [
+    "TB_BU_FN:Sheet1:R${B=113300}",
+    "CNWHU Intercompany Balance Sheet Reconciliation:113300:C${B=Totals}",
+    "CNWHU Intercompany Balance Sheet Reconciliation:113300:C${B=CNCDU|CNXAU|CNBSU|CNWHU|CNSZU}",
+    "CNWHU Intercompany Balance Sheet Reconciliation:113300:C${B=Variance}"
   ]
 ];

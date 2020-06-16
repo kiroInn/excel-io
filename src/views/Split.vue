@@ -288,17 +288,19 @@ export default {
       reader.onload = async () => {
         const fromWorkBook = new Excel.Workbook();
         await fromWorkBook.xlsx.load(reader.result);
-        mappings.forEach(async mapping => {
+        mappings.forEach(mapping => {
           const toWorkbook = new Excel.Workbook();
           const resultWrokbook = fillData(fromWorkBook, toWorkbook, mapping);
-          this.files.push({
-            key: _.get(mapping, "templateName"),
-            name: _.get(mapping, "templateName"),
-            workbook: resultWrokbook,
-            buffer: resultWrokbook.xlsx.writeBuffer()
-          });
-          if (this.files.length === mappings.length) this.isLoading = false;
+          if(_.get(resultWrokbook, 'worksheets.length', 0) > 0){
+            this.files.push({
+              key: _.get(mapping, "templateName"),
+              name: _.get(mapping, "templateName"),
+              workbook: resultWrokbook,
+              buffer: resultWrokbook.xlsx.writeBuffer()
+            });
+          }
         });
+        this.isLoading = false;
       };
       if (isXlsx(file.name)) {
         reader.readAsArrayBuffer(file);
@@ -403,5 +405,8 @@ export default {
 .configMapping {
   height: calc(100vh - 500px);
   overflow-y: scroll;
+}
+#prefixing{
+  margin-left: 6px;
 }
 </style>

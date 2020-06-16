@@ -70,6 +70,7 @@ export function fillData(
   const values = _.get(mapping, "values");
   _.forEach(values, value => {
     const fromSheet = from.getWorksheet(getCellSheet(_.get(value, "from")));
+    if(fromSheet){
     let toSheet = to.getWorksheet(getCellSheet(_.get(value, "to")));
     if (!toSheet) {
       toSheet = to.addWorksheet(getCellSheet(_.get(value, "to")));
@@ -117,6 +118,7 @@ export function fillData(
       toSheet.getCell(
         getCellPosition(_.get(value, "to"))
       ).value = fromSheet.getCell(getCellPosition(_.get(value, "from"))).value;
+    }
     }
   });
   return to;

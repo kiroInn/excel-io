@@ -2,7 +2,7 @@
   <div class="result-container">
     <div class="result-count">
       <div>imported count: <b>{{importCount - 1}}</b></div>
-      <div>success count:<b>{{dataArray.length}}</b></div>
+      <div>success count:<b>{{successCount}}</b></div>
     </div>
     <div class="config">
       <input type="checkbox" id="isShowAll" v-model="isShowAll" />
@@ -73,6 +73,9 @@ export default {
             2
         );
       }
+    },
+    successCount(){
+      return _.get(_.union(_.map(this.dataArray, items => _.get(items, 1))), 'length');
     }
   },
   data() {
