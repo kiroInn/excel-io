@@ -45,7 +45,11 @@ export function parse(
       const addressExp = _.get(content.split(":"), 2);
       const isNegative = _.get(content.split(":"), 3) === "isNegative";
       const workbook: Excel.Workbook | undefined = _.get(
-        _.find(files, ({ fileName: name }) => !!name.match(new RegExp(`${fileName}\\.`, 'g'))),
+        _.find(
+          files,
+          ({ fileName: name }) =>
+            !!name.match(new RegExp(`${fileName}\\.`, "g"))
+        ),
         "workbook"
       );
       let value: CellValue | string = EXPRESS_VALUE_NOT_FOUND;
@@ -59,7 +63,15 @@ export function parse(
           value = _.get(cell, "value");
         }
         value = _.isObject(value) ? _.get(value, "result", 0) : value;
-        value = isNegative && value !== EXPRESS_VALUE_NOT_FOUND ? `-${value}` : value;
+        try {
+          value =
+            isNegative && value !== EXPRESS_VALUE_NOT_FOUND
+              ? Number.parseFloat(`-${value}`).toFixed(2)
+              : value;
+        } catch (err) {
+          console.error(`${sheetName} ${address} expression rule is err.`);
+        }
+        if (sheetName === "200000") console.log("value：", value);
       }
       rowResult.push(value);
     });
@@ -237,7 +249,8 @@ export const DEFAULT_EXPRESS = [
     "CNCDU-897600:897600:AC${D=CNCDU|CNXAU|CNBSU|CNWHU|CNSZU}",
     "CNCDU-897600:897600:AC${D=Variance}"
   ],
-  ["TB_BU_FN:Sheet1:O${B=106400}",
+  [
+    "TB_BU_FN:Sheet1:O${B=106400}",
     "CNBSU-106400:Reconciliation:C${B=BANK BALANCE (AS PER BANK STATEMENT)}",
     "CNBSU-106400:Reconciliation:C${B=BOOK BALANCE}",
     "CNBSU-106400:Reconciliation:C${B=VARIANCE}",
@@ -260,12 +273,13 @@ export const DEFAULT_EXPRESS = [
     "TB_BU:Sheet1:O${B=106420}",
     "CNBSU-106420:Reconciliation:C${B=BALANCE PER THE GL (FUNCTIONAL CURRENCY)}"
   ],
-  ["TB_BU_FN:Sheet1:O${B=106600}",
-      "CNBSU-106600:Reconciliation:C${B=BANK BALANCE (AS PER BANK STATEMENT)}",
-      "CNBSU-106600:Reconciliation:C${B=BOOK BALANCE}",
-      "CNBSU-106600:Reconciliation:C${B=VARIANCE}",
-      "TB_BU:Sheet1:O${B=106600}",
-      "CNBSU-106600:Reconciliation:C${B=BALANCE PER THE GL (FUNCTIONAL CURRENCY)}"
+  [
+    "TB_BU_FN:Sheet1:O${B=106600}",
+    "CNBSU-106600:Reconciliation:C${B=BANK BALANCE (AS PER BANK STATEMENT)}",
+    "CNBSU-106600:Reconciliation:C${B=BOOK BALANCE}",
+    "CNBSU-106600:Reconciliation:C${B=VARIANCE}",
+    "TB_BU:Sheet1:O${B=106600}",
+    "CNBSU-106600:Reconciliation:C${B=BALANCE PER THE GL (FUNCTIONAL CURRENCY)}"
   ],
   [
     "TB_BU_FN:Sheet1:O${B=112000}",
@@ -375,7 +389,8 @@ export const DEFAULT_EXPRESS = [
     "CNBSU-230000:230000:AC${D=CNCDU|CNXAU|CNBSU|CNWHU|CNSZU}",
     "CNBSU-230000:230000:AC${D=Variance}"
   ],
-  [ "TB_BU_FN:Sheet1:O${B=233000}",
+  [
+    "TB_BU_FN:Sheet1:O${B=233000}",
     "CNBSU-233000:233000:AC${D=Totals}",
     "CNBSU-233000:233000:AC${D=CNCDU|CNXAU|CNBSU|CNWHU|CNSZU}",
     "CNBSU-233000:233000:AC${D=Variance}"
@@ -409,5 +424,97 @@ export const DEFAULT_EXPRESS = [
     "CNBSU-897600:897600:AC${D=Totals}",
     "CNBSU-897600:897600:AC${D=CNCDU|CNXAU|CNBSU|CNWHU|CNSZU}",
     "CNBSU-897600:897600:AC${D=Variance}"
+  ],
+  [
+    "TB_BU_FN:Sheet1:P${B=106430}",
+    "CNSZU-106430:Reconciliation:C${B=BANK BALANCE (AS PER BANK STATEMENT)}",
+    "CNSZU-106430:Reconciliation:C${B=BOOK BALANCE}",
+    "CNSZU-106430:Reconciliation:C${B=VARIANCE}",
+    "TB_BU:Sheet1:P${B=106430}",
+    "CNSZU-106430:Reconciliation:C${B=BALANCE PER THE GL (FUNCTIONAL CURRENCY)}"
+  ],
+  [
+    "TB_BU_FN:Sheet1:P${B=112000}",
+    "CNSZU-112000:112000:C${B=Totals}",
+    "CNSZU-112000:112000:C${B=CNCDU|CNXAU|CNBSU|CNWHU|CNSZU}",
+    "CNSZU-112000:112000:C${B=Variance}"
+  ],
+  [
+    "TB_BU_FN:Sheet1:P${B=120000}",
+    "CNSZU-120000:120000:AX${G=Totals}",
+    "CNSZU-120000:120000:AX${G=CNCDU|CNXAU|CNBSU|CNWHU|CNSZU}",
+    "CNSZU-120000:120000:AX${G=Check}"
+  ],
+  [
+    "TB_BU_FN:Sheet1:P${B=140000}",
+    "CNSZU-140000:140000:C${B=Totals}",
+    "CNSZU-140000:140000:C${B=CNCDU|CNXAU|CNBSU|CNWHU|CNSZU}",
+    "CNSZU-140000:140000:C${B=Variance}"
+  ],
+  [
+    "TB_BU_FN:Sheet1:P${B=191000}",
+    "CNSZU-191000:191000:C${B=Totals}",
+    "CNSZU-191000:191000:C${B=CNCDU|CNXAU|CNBSU|CNWHU|CNSZU}",
+    "CNSZU-191000:191000:C${B=Variance}"
+  ],
+  [
+    "TB_BU_FN:Sheet1:P${B=214000}",
+    "CNSZU-214000:214000:AC${D=Totals}",
+    "CNSZU-214000:214000:AC${D=CNCDU|CNXAU|CNBSU|CNWHU|CNSZU}",
+    "CNSZU-214000:214000:AC${D=Variance}"
+  ],
+  [
+    "TB_BU_FN:Sheet1:P${B=215000}",
+    "CNSZU-215000:215000:AC${D=Totals}",
+    "CNSZU-215000:215000:AC${D=CNCDU|CNXAU|CNBSU|CNWHU|CNSZU}",
+    "CNSZU-215000:215000:AC${D=Variance}"
+  ],
+  [
+    "TB_BU_FN:Sheet1:P${B=215100}",
+    "CNSZU-215100:215100:AC${D=Totals}",
+    "CNSZU-215100:215100:AC${D=CNCDU|CNXAU|CNBSU|CNWHU|CNSZU}",
+    "CNSZU-215100:215100:AC${D=Variance}"
+  ],
+  [
+    "TB_BU_FN:Sheet1:P${B=215300}",
+    "CNSZU-215300:215300:AC${D=Totals}",
+    "CNSZU-215300:215300:AC${D=CNCDU|CNXAU|CNBSU|CNWHU|CNSZU}",
+    "CNSZU-215300:215300:AC${D=Variance}"
+  ],
+  [
+    "TB_BU_FN:Sheet1:P${B=215600}",
+    "CNSZU-215600:215600:AC${D=Totals}",
+    "CNSZU-215600:215600:AC${D=CNCDU|CNXAU|CNBSU|CNWHU|CNSZU}",
+    "CNSZU-215600:215600:AC${D=Variance}"
+  ],
+  [
+    "TB_BU_FN:Sheet1:P${B=216000}",
+    "CNSZU-216000:216000:AC${D=Totals}",
+    "CNSZU-216000:216000:AC${D=CNCDU|CNXAU|CNBSU|CNWHU|CNSZU}",
+    "CNSZU-216000:216000:AC${D=Variance}"
+  ],
+  [
+    "TB_BU_FN:Sheet1:P${B=217500}",
+    "CNSZU-217500:217500:AC${D=Totals}",
+    "CNSZU-217500:217500:AC${D=CNCDU|CNXAU|CNBSU|CNWHU|CNSZU}",
+    "CNSZU-217500:217500:AC${D=Variance}"
+  ],
+  [
+    "TB_BU_FN:Sheet1:P${B=230000}",
+    "CNSZU-230000:230000:AC${D=Totals}",
+    "CNSZU-230000:230000:AC${D=CNCDU|CNXAU|CNBSU|CNWHU|CNSZU}",
+    "CNSZU-230000:230000:AC${D=Variance}"
+  ],
+  [
+    "TB_BU_FN:Sheet1:P${B=235100}",
+    "CNSZU-235100:235100:AC${D=Totals}",
+    "CNSZU-235100:235100:AC${D=CNCDU|CNXAU|CNBSU|CNWHU|CNSZU}",
+    "CNSZU-235100:235100:AC${D=Variance}"
+  ],
+  [
+    "TB_BU_FN:Sheet1:P${B=897600}",
+    "CNSZU-897600:897600:AC${D=Totals}",
+    "CNSZU-897600:897600:AC${D=CNCDU|CNXAU|CNBSU|CNWHU|CNSZU}",
+    "CNSZU-897600:897600:AC${D=Variance}"
   ]
 ];

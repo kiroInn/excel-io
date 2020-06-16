@@ -246,7 +246,7 @@ export default {
           .then(() => {
             return zip.generateAsync({ type: "blob" });
           })
-          .then(content =>  {
+          .then(content => {
             const date = new Date();
             saveAs(
               content,

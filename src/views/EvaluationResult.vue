@@ -75,7 +75,7 @@ export default {
     return {
       isShowAll: false,
       isShowDollar: false,
-      margin: 0.5,
+      margin: 0.5
     };
   },
   methods: {
@@ -83,7 +83,9 @@ export default {
       return _.isNumber(x) ? Number.parseFloat(x).toFixed(2) : x;
     },
     isValidate(value1, value2) {
-      return Math.abs(this.financial(value1) - this.financial(value2)) <= this.margin;
+      return (
+        Math.abs(this.financial(value1) - this.financial(value2)) <= this.margin
+      );
     }
   }
 };
@@ -108,9 +110,9 @@ export default {
     background-color: #4caf50;
     color: white;
   }
-  thead th { 
-    position: sticky; 
-    top: 0; 
+  thead th {
+    position: sticky;
+    top: 0;
     background-color: white;
   }
 }

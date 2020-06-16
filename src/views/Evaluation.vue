@@ -105,6 +105,7 @@ export default {
           reader.onload = async () => {
             const workbook = new Excel.Workbook();
             await workbook.xlsx.load(reader.result);
+            console.log("workbook: ", workbook);
             result.push({
               fileName: file.name,
               workbook
