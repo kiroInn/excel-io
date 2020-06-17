@@ -31,7 +31,7 @@
         </tr>
       </thead>
       <tr v-for="(values, index) in dataArray" :key="index">
-        <td>{{ values[1] }}</td>
+        <td class="codeName">{{ values[1] }}</td>
         <td>{{ financial(values[0]) }}</td>
         <td>{{ financial(values[2]) }}</td>
         <td>{{ financial(values[3]) }}</td>
@@ -138,6 +138,13 @@ export default {
     position: sticky;
     top: 0;
     background-color: white;
+  }
+  td.codeName {
+    max-width: 240px;
+    display: inline-flex;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
   }
 }
 </style>

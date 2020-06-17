@@ -18,5 +18,6 @@ Todo:
   ✔ refactor mapping constructor @done(20-06-04 00:20)
   ✔ add mapping @started(20-06-03 10:39) @done(20-06-04 00:51) @lasted(14h12m24s)
   ✔ fix transform range err @done(20-06-10 13:34)
-  ☐ can add value for to cell
-  ☐ vue test import excel @started(20-05-28 21:38)
+  ✔ vue test import excel @started(20-05-28 21:38) @done(20-06-17 13:40) @lasted(2w5d16h2m7s)
+  ☐ support { from: "230000-2019", to: "2019", type: "sheet" } year auto increase
+  ☐ support { from: "140000-1", to: "1", type: "sheet" }, sheer auto increase

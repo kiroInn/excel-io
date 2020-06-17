@@ -1,5 +1,73 @@
 export const DEFAULT_MAPPING = [
   {
+    templateName: "106470.xlsx",
+    values: [
+      { from: "106470-Instructions", to: "Instructions", type: "sheet" },
+      { from: "106470-Reconciliation", to: "Reconciliation", type: "sheet" },
+      {
+        from: "106470-Outstanding Checks",
+        to: "Outstanding Checks",
+        type: "sheet"
+      },
+      {
+        from: "106470-Deposits in Transit",
+        to: "Deposits in Transit",
+        type: "sheet"
+      }
+    ]
+  },
+  {
+    templateName: "106460.xlsx",
+    values: [
+      { from: "106460-Instructions", to: "Instructions", type: "sheet" },
+      { from: "106460-Reconciliation", to: "Reconciliation", type: "sheet" },
+      {
+        from: "106460-Outstanding Checks",
+        to: "Outstanding Checks",
+        type: "sheet"
+      },
+      {
+        from: "106460-Deposits in Transit",
+        to: "Deposits in Transit",
+        type: "sheet"
+      }
+    ]
+  },
+  {
+    templateName: "106450.xlsx",
+    values: [
+      { from: "106450-Instructions", to: "Instructions", type: "sheet" },
+      { from: "106450-Reconciliation", to: "Reconciliation", type: "sheet" },
+      {
+        from: "106450-Outstanding Checks",
+        to: "Outstanding Checks",
+        type: "sheet"
+      },
+      {
+        from: "106450-Deposits in Transit",
+        to: "Deposits in Transit",
+        type: "sheet"
+      }
+    ]
+  },
+  {
+    templateName: "106440.xlsx",
+    values: [
+      { from: "106440-Instructions", to: "Instructions", type: "sheet" },
+      { from: "106440-Reconciliation", to: "Reconciliation", type: "sheet" },
+      {
+        from: "106440-Outstanding Checks",
+        to: "Outstanding Checks",
+        type: "sheet"
+      },
+      {
+        from: "106440-Deposits in Transit",
+        to: "Deposits in Transit",
+        type: "sheet"
+      }
+    ]
+  },
+  {
     templateName: "106430.xlsx",
     values: [
       { from: "106430-Instructions", to: "Instructions", type: "sheet" },
@@ -76,7 +144,10 @@ export const DEFAULT_MAPPING = [
   },
   {
     templateName: "119000.xlsx",
-    values: [{ from: "119000", to: "119000", type: "sheet" }]
+    values: [
+      { from: "119000", to: "119000", type: "sheet" },
+      { from: "119000-bank receipt", to: "bank receipt", type: "sheet" }
+    ]
   },
   {
     templateName: "190500.xlsx",
@@ -294,6 +365,10 @@ export const DEFAULT_MAPPING = [
   {
     templateName: "897100.xlsx",
     values: [{ from: "897100", to: "897100", type: "sheet" }]
+  },
+  {
+    templateName: "897.xlsx",
+    values: [{ from: "897", to: "897", type: "sheet" }]
   },
   {
     templateName: "897600.xlsx",

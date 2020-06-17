@@ -486,6 +486,12 @@ export const MAPPING_EXPRESS = [
     "CNWHU-120000:120000:AX${G=Check}"
   ],
   [
+    "TB_BU_FN:Sheet1:R${B=140000}",
+    "CNWHU-140000:140000:C${B=Totals}",
+    "CNWHU-140000:140000:C${B=CNCDU|CNXAU|CNBSU|CNWHU|CNSZU}",
+    "CNWHU-140000:140000:C${B=Variance}"
+  ],
+  [
     "TB_BU_FN:Sheet1:R${B=191000}",
     "CNWHU-191000:191000:C${B=Totals}",
     "CNWHU-191000:191000:C${B=CNCDU|CNXAU|CNBSU|CNWHU|CNSZU}",
@@ -622,5 +628,233 @@ export const MAPPING_EXPRESS = [
     "CNWHU Intercompany Balance Sheet Reconciliation:113300:C${B=Totals}",
     "CNWHU Intercompany Balance Sheet Reconciliation:113300:C${B=CNCDU|CNXAU|CNBSU|CNWHU|CNSZU}",
     "CNWHU Intercompany Balance Sheet Reconciliation:113300:C${B=Variance}"
+  ],
+  [
+    "TB_BU_FN:Sheet1:Q${B=106900}",
+    "CNXAU-106900:Reconciliation:C${B=BANK BALANCE (AS PER BANK STATEMENT)}",
+    "CNXAU-106900:Reconciliation:C${B=BOOK BALANCE}",
+    "CNXAU-106900:Reconciliation:C${B=VARIANCE}",
+    "TB_BU:Sheet1:Q${B=106900}",
+    "CNXAU-106900:Reconciliation:C${B=BALANCE PER THE GL (FUNCTIONAL CURRENCY)}"
+  ],
+  [
+    "TB_BU_FN:Sheet1:Q${B=106920}",
+    "CNXAU-106920:Reconciliation:C${B=BANK BALANCE (AS PER BANK STATEMENT)}",
+    "CNXAU-106920:Reconciliation:C${B=BOOK BALANCE}",
+    "CNXAU-106920:Reconciliation:C${B=VARIANCE}",
+    "TB_BU:Sheet1:Q${B=106920}",
+    "CNXAU-106920:Reconciliation:C${B=BALANCE PER THE GL (FUNCTIONAL CURRENCY)}"
+  ],
+  [
+    "TB_BU_FN:Sheet1:Q${B=106970}",
+    "CNXAU-106970:Reconciliation:C${B=BANK BALANCE (AS PER BANK STATEMENT)}",
+    "CNXAU-106970:Reconciliation:C${B=BOOK BALANCE}",
+    "CNXAU-106970:Reconciliation:C${B=VARIANCE}",
+    "TB_BU:Sheet1:Q${B=106970}",
+    "CNXAU-106970:Reconciliation:C${B=BALANCE PER THE GL (FUNCTIONAL CURRENCY)}"
+  ],
+  [
+    "TB_BU_FN:Sheet1:Q${B=112000}",
+    "CNXAU-112000:112000:C${B=Totals}",
+    "CNXAU-112000:112000:C${B=CNCDU|CNXAU|CNBSU|CNWHU|CNSZU}",
+    "CNXAU-112000:112000:C${B=Variance}"
+  ],
+  [
+    "TB_BU_FN:Sheet1:Q${B=119000}",
+    "CNXAU-119000:119000:C${B=Totals}",
+    "CNXAU-119000:119000:C${B=CNCDU|CNXAU|CNBSU|CNWHU|CNSZU}",
+    "CNXAU-119000:119000:C${B=Variance}"
+  ],
+  [
+    "TB_BU_FN:Sheet1:Q${B=120000}",
+    "CNXAU-120000:120000:AX${G=Totals}",
+    "CNXAU-120000:120000:AX${G=CNCDU|CNXAU|CNBSU|CNWHU|CNSZU}",
+    "CNXAU-120000:120000:AX${G=Check}"
+  ],
+  [
+    "TB_BU_FN:Sheet1:Q${B=140000}",
+    "CNXAU-140000:140000:C${B=Totals}",
+    "CNXAU-140000:140000:C${B=CNCDU|CNXAU|CNBSU|CNWHU|CNSZU}",
+    "CNXAU-140000:140000:C${B=Variance}"
+  ],
+  [
+    "TB_BU_FN:Sheet1:Q${B=190500}",
+    "CNXAU-190500:190500:AC${D=Totals}",
+    "CNXAU-190500:190500:AC${D=CNCDU|CNXAU|CNBSU|CNWHU|CNSZU}",
+    "CNXAU-190500:190500:AC${D=Variance}"
+  ],
+  [
+    "TB_BU_FN:Sheet1:Q${B=191000}",
+    "CNXAU-191000:191000:C${B=Totals}",
+    "CNXAU-191000:191000:C${B=CNCDU|CNXAU|CNBSU|CNWHU|CNSZU}",
+    "CNXAU-191000:191000:C${B=Variance}"
+  ],
+  [
+    "TB_BU_FN:Sheet1:Q${B=196000}",
+    "CNXAU-196000:196000:C${B=Totals}",
+    "CNXAU-196000:196000:C${B=CNCDU|CNXAU|CNBSU|CNWHU|CNSZU}",
+    "CNXAU-196000:196000:C${B=Variance}"
+  ],
+  [
+    "TB_BU_FN:Sheet1:Q${B=200000}",
+    "CNXAU-200000:200000:C${B=Balance per subledger}:isNegative",
+    "CNXAU-200000:200000:C${B=Balance per GL}",
+    "CNXAU-200000:200000:C${B=Variance}"
+  ],
+  [
+    "TB_BU_FN:Sheet1:Q${B=205000}",
+    "CNXAU-205000:205000:AC${D=Totals}",
+    "CNXAU-205000:205000:AC${D=CNCDU|CNXAU|CNBSU|CNWHU|CNSZU}",
+    "CNXAU-205000:205000:AC${D=Variance}"
+  ],
+  [
+    "TB_BU_FN:Sheet1:Q${B=210000}",
+    "CNXAU-210000:210000:AC${D=Totals}",
+    "CNXAU-210000:210000:AC${D=CNCDU|CNXAU|CNBSU|CNWHU|CNSZU}",
+    "CNXAU-210000:210000:AC${D=Variance}"
+  ],
+  [
+    "TB_BU_FN:Sheet1:Q${B=214000}",
+    "CNXAU-214000:214000:AC${D=Totals}",
+    "CNXAU-214000:214000:AC${D=CNCDU|CNXAU|CNBSU|CNWHU|CNSZU}",
+    "CNXAU-214000:214000:AC${D=Variance}"
+  ],
+  [
+    "TB_BU_FN:Sheet1:N${B=215000}",
+    "CNXAU-215000:215000:AC${D=Totals}",
+    "CNXAU-215000:215000:AC${D=CNCDU|CNXAU|CNBSU|CNWHU|CNSZU}",
+    "CNXAU-215000:215000:AC${D=Variance}"
+  ],
+  [
+    "TB_BU_FN:Sheet1:Q${B=215100}",
+    "CNXAU-215100:215100:AC${D=Totals}",
+    "CNXAU-215100:215100:AC${D=CNCDU|CNXAU|CNBSU|CNWHU|CNSZU}",
+    "CNXAU-215100:215100:AC${D=Variance}"
+  ],
+  [
+    "TB_BU_FN:Sheet1:Q${B=215300}",
+    "CNXAU-215300:215300:AC${D=Totals}",
+    "CNXAU-215300:215300:AC${D=CNCDU|CNXAU|CNBSU|CNWHU|CNSZU}",
+    "CNXAU-215300:215300:AC${D=Variance}"
+  ],
+  [
+    "TB_BU_FN:Sheet1:Q${B=215600}",
+    "CNXAU-215600:215600:AC${D=Totals}",
+    "CNXAU-215600:215600:AC${D=CNCDU|CNXAU|CNBSU|CNWHU|CNSZU}",
+    "CNXAU-215600:215600:AC${D=Variance}"
+  ],
+  [
+    "TB_BU_FN:Sheet1:Q${B=216000}",
+    "CNXAU-216000:216000:AC${D=Totals}",
+    "CNXAU-216000:216000:AC${D=CNCDU|CNXAU|CNBSU|CNWHU|CNSZU}",
+    "CNXAU-216000:216000:AC${D=Variance}"
+  ],
+  [
+    "TB_BU_FN:Sheet1:Q${B=217500}",
+    "CNXAU-217500:217500:AC${D=Totals}",
+    "CNXAU-217500:217500:AC${D=CNCDU|CNXAU|CNBSU|CNWHU|CNSZU}",
+    "CNXAU-217500:217500:AC${D=Variance}"
+  ],
+  [
+    "TB_BU_FN:Sheet1:Q${B=221850}",
+    "CNXAU-221850:221850:AC${D=Totals}",
+    "CNXAU-221850:221850:AC${D=CNCDU|CNXAU|CNBSU|CNWHU|CNSZU}",
+    "CNXAU-221850:221850:AC${D=Variance}"
+  ],
+  [
+    "TB_BU_FN:Sheet1:Q${B=230000}",
+    "CNXAU-230000:230000:AC${D=Totals}",
+    "CNXAU-230000:230000:AC${D=CNCDU|CNXAU|CNBSU|CNWHU|CNSZU}",
+    "CNXAU-230000:230000:AC${D=Variance}"
+  ],
+  [
+    "TB_BU_FN:Sheet1:Q${B=235000}",
+    "CNXAU-235000:235000:AC${D=Totals}",
+    "CNXAU-235000:235000:AC${D=CNCDU|CNXAU|CNBSU|CNWHU|CNSZU}",
+    "CNXAU-235000:235000:AC${D=Variance}"
+  ],
+  [
+    "TB_BU_FN:Sheet1:Q${B=235100}",
+    "CNXAU-235100:235100:AC${D=Totals}",
+    "CNXAU-235100:235100:AC${D=CNCDU|CNXAU|CNBSU|CNWHU|CNSZU}",
+    "CNXAU-235100:235100:AC${D=Variance}"
+  ],
+  [
+    "TB_BU_FN:Sheet1:Q${B=274000}",
+    "CNXAU-274000:274000:AC${D=Totals}",
+    "CNXAU-274000:274000:AC${D=CNCDU|CNXAU|CNBSU|CNWHU|CNSZU}",
+    "CNXAU-274000:274000:AC${D=Variance}"
+  ],
+  [
+    "TB_BU_FN:Sheet1:Q${B=897100}",
+    "CNXAU-897100:897100:AC${D=Totals}",
+    "CNXAU-897100:897100:AC${D=CNCDU|CNXAU|CNBSU|CNWHU|CNSZU}",
+    "CNXAU-897100:897100:AC${D=Variance}"
+  ],
+  [
+    "TB_BU_FN:Sheet1:Q${B=897600}",
+    "CNXAU-897600:897600:AC${D=Totals}",
+    "CNXAU-897600:897600:AC${D=CNCDU|CNXAU|CNBSU|CNWHU|CNSZU}",
+    "CNXAU-897600:897600:AC${D=Variance}"
+  ],
+  [
+    "TB_BU_FN:Sheet1:Q${B=897500}",
+    "CNXAU-897500:897500:AC${D=Totals}",
+    "CNXAU-897500:897500:AC${D=CNCDU|CNXAU|CNBSU|CNWHU|CNSZU}",
+    "CNXAU-897500:897500:AC${D=Variance}"
+  ],
+  [
+    "TB_BU_FN:Sheet1:Q${B=113400}",
+    "CNXAU Intercompany Balance Sheet Reconciliation:113400:C${B=Totals}",
+    "CNXAU Intercompany Balance Sheet Reconciliation:113400:C${B=CNCDU|CNXAU|CNBSU|CNWHU|CNSZU}",
+    "CNXAU Intercompany Balance Sheet Reconciliation:113400:C${B=check}"
+  ],
+  [
+    "TB_BU_FN:Sheet1:Q${B=202000}",
+    "CNXAU Intercompany Balance Sheet Reconciliation:202000:C${B=Totals}",
+    "CNXAU Intercompany Balance Sheet Reconciliation:202000:C${B=CNCDU|CNXAU|CNBSU|CNWHU|CNSZU}",
+    "CNXAU Intercompany Balance Sheet Reconciliation:202000:C${B=Variance}"
+  ],
+  [
+    "TB_BU_FN:Sheet1:Q${B=113300}",
+    "CNXAU Intercompany Balance Sheet Reconciliation:113300:C${B=Totals}",
+    "CNXAU Intercompany Balance Sheet Reconciliation:113300:C${B=CNCDU|CNXAU|CNBSU|CNWHU|CNSZU}",
+    "CNXAU Intercompany Balance Sheet Reconciliation:113300:C${B=Variance}"
+  ],
+  [
+    "TB_BU_FN:Sheet1:N${B=113400}",
+    "CNCDU Intercompany Balance Sheet Reconciliation:113400:C${B=Totals}",
+    "CNCDU Intercompany Balance Sheet Reconciliation:113400:C${B=CNCDU|CNXAU|CNBSU|CNWHU|CNSZU}",
+    "CNCDU Intercompany Balance Sheet Reconciliation:113400:C${B=Variance}"
+  ],
+  [
+    "TB_BU_FN:Sheet1:N${B=202000}",
+    "CNCDU Intercompany Balance Sheet Reconciliation:202000:C${B=Totals}",
+    "CNCDU Intercompany Balance Sheet Reconciliation:202000:C${B=CNCDU|CNXAU|CNBSU|CNWHU|CNSZU}",
+    "CNCDU Intercompany Balance Sheet Reconciliation:202000:C${B=Variance}"
+  ],
+  [
+    "TB_BU_FN:Sheet1:N${B=113300}",
+    "CNCDU Intercompany Balance Sheet Reconciliation:113300:C${B=Totals}",
+    "CNCDU Intercompany Balance Sheet Reconciliation:113300:C${B=CNCDU|CNXAU|CNBSU|CNWHU|CNSZU}",
+    "CNCDU Intercompany Balance Sheet Reconciliation:113300:C${B=Variance}"
+  ],
+  [
+    "TB_BU_FN:Sheet1:O${B=113400}",
+    "CNBSU Intercompany Balance Sheet Reconciliation:113400:C${B=Totals}",
+    "CNBSU Intercompany Balance Sheet Reconciliation:113400:C${B=CNCDU|CNXAU|CNBSU|CNWHU|CNSZU}",
+    "CNBSU Intercompany Balance Sheet Reconciliation:113400:C${B=Variance}"
+  ],
+  [
+    "TB_BU_FN:Sheet1:O${B=202000}",
+    "CNBSU Intercompany Balance Sheet Reconciliation:202000:C${B=Totals}",
+    "CNBSU Intercompany Balance Sheet Reconciliation:202000:C${B=CNCDU|CNXAU|CNBSU|CNWHU|CNSZU}",
+    "CNBSU Intercompany Balance Sheet Reconciliation:202000:C${B=Variance}"
+  ],
+  [
+    "TB_BU_FN:Sheet1:O${B=113300}",
+    "CNBSU Intercompany Balance Sheet Reconciliation:113300:C${B=Totals}",
+    "CNBSU Intercompany Balance Sheet Reconciliation:113300:C${B=CNCDU|CNXAU|CNBSU|CNWHU|CNSZU}",
+    "CNBSU Intercompany Balance Sheet Reconciliation:113300:C${B=Variance}"
   ]
 ];
