@@ -70,55 +70,58 @@ export function fillData(
   const values = _.get(mapping, "values");
   _.forEach(values, value => {
     const fromSheet = from.getWorksheet(getCellSheet(_.get(value, "from")));
-    if(fromSheet){
-    let toSheet = to.getWorksheet(getCellSheet(_.get(value, "to")));
-    if (!toSheet) {
-      toSheet = to.addWorksheet(getCellSheet(_.get(value, "to")));
-    }
-    const type = _.get(value, "type");
-    if (type === CELL_VALUE_TYPE.VALUE) {
-      //todo
-    }
-    if (type === CELL_VALUE_TYPE.SHEET) {
-      toSheet.model = fromSheet.model;
-      toSheet.name = getCellSheet(_.get(value, "to"));
-      _.each(fromSheet.getImages(), image => {
-        const fromImageId = Number(_.get(image, "imageId"));
+    if (fromSheet) {
+      let toSheet = to.getWorksheet(getCellSheet(_.get(value, "to")));
+      if (!toSheet) {
+        toSheet = to.addWorksheet(getCellSheet(_.get(value, "to")));
+      }
+      const type = _.get(value, "type");
+      if (type === CELL_VALUE_TYPE.VALUE) {
+        //todo
+      }
+      if (type === CELL_VALUE_TYPE.SHEET) {
+        toSheet.model = fromSheet.model;
+        toSheet.name = getCellSheet(_.get(value, "to"));
+        _.each(fromSheet.getImages(), image => {
+          const fromImageId = Number(_.get(image, "imageId"));
+          const imageId = to.addImage({
+            buffer: from.getImage(fromImageId).buffer,
+            extension: "png"
+          });
+          toSheet.addImage(imageId, {
+            tl: {
+              col: Number(_.get(image, "range.tl.col")),
+              row: Number(_.get(image, "range.tl.row"))
+            },
+            br: {
+              col: Number(_.get(image, "range.br.col")),
+              row: Number(_.get(image, "range.br.row"))
+            }
+          });
+        });
+      } else if (type === CELL_VALUE_TYPE.IMAGE) {
+        const fromImageId = Number(
+          _.get(_.first(fromSheet.getImages()), "imageId")
+        );
         const imageId = to.addImage({
           buffer: from.getImage(fromImageId).buffer,
           extension: "png"
         });
-        toSheet.addImage(imageId, {
-          tl: {
-            col: Number(_.get(image, "range.tl.col")),
-            row: Number(_.get(image, "range.tl.row"))
-          },
-          br: {
-            col: Number(_.get(image, "range.br.col")),
-            row: Number(_.get(image, "range.br.row"))
-          }
-        });
-      });
-    } else if (type === CELL_VALUE_TYPE.IMAGE) {
-      const fromImageId = Number(
-        _.get(_.first(fromSheet.getImages()), "imageId")
-      );
-      const imageId = to.addImage({
-        buffer: from.getImage(fromImageId).buffer,
-        extension: "png"
-      });
-      toSheet.addImage(imageId, _.get(value, "range"));
-    } else if (type === CELL_VALUE_TYPE.DATE) {
-      const cellValue = fromSheet.getCell(getCellPosition(_.get(value, "from")))
-        .value;
-      toSheet.getCell(getCellPosition(_.get(value, "to"))).value = moment(
-        _.get(cellValue, "result")
-      ).format("YYYY-MM-DD");
-    } else {
-      toSheet.getCell(
-        getCellPosition(_.get(value, "to"))
-      ).value = fromSheet.getCell(getCellPosition(_.get(value, "from"))).value;
-    }
+        toSheet.addImage(imageId, _.get(value, "range"));
+      } else if (type === CELL_VALUE_TYPE.DATE) {
+        const cellValue = fromSheet.getCell(
+          getCellPosition(_.get(value, "from"))
+        ).value;
+        toSheet.getCell(getCellPosition(_.get(value, "to"))).value = moment(
+          _.get(cellValue, "result")
+        ).format("YYYY-MM-DD");
+      } else {
+        toSheet.getCell(
+          getCellPosition(_.get(value, "to"))
+        ).value = fromSheet.getCell(
+          getCellPosition(_.get(value, "from"))
+        ).value;
+      }
     }
   });
   return to;

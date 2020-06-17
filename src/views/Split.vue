@@ -167,12 +167,9 @@ import * as JSZip from "jszip";
 import { saveAs } from "file-saver";
 import { fillData } from "@/service/transform";
 import { isXlsx } from "@/util/file";
+import { DEFAULT_MAPPING } from "@/const/split";
 import _ from "lodash";
-import {
-  DEFAULT_MAPPING,
-  transformMappings,
-  reverseTransformMappings
-} from "@/service/mapping";
+import { transformMappings, reverseTransformMappings } from "@/service/mapping";
 
 export default {
   name: "Split",
@@ -291,7 +288,7 @@ export default {
         mappings.forEach(mapping => {
           const toWorkbook = new Excel.Workbook();
           const resultWrokbook = fillData(fromWorkBook, toWorkbook, mapping);
-          if(_.get(resultWrokbook, 'worksheets.length', 0) > 0){
+          if (_.get(resultWrokbook, "worksheets.length", 0) > 0) {
             this.files.push({
               key: _.get(mapping, "templateName"),
               name: _.get(mapping, "templateName"),
@@ -406,7 +403,7 @@ export default {
   height: calc(100vh - 500px);
   overflow-y: scroll;
 }
-#prefixing{
+#prefixing {
   margin-left: 6px;
 }
 </style>

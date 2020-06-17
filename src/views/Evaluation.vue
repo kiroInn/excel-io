@@ -63,7 +63,8 @@
 <script>
 import _ from "lodash";
 import { isXlsx } from "@/util/file";
-import { parse, DEFAULT_EXPRESS } from "@/service/evaluation";
+import { MAPPING_EXPRESS } from "@/const/evaluation";
+import { parse } from "@/service/evaluation";
 import Modal from "@/components/modal";
 import Loader from "@/components/loader";
 import EvaluationResult from "@/views/EvaluationResult";
@@ -85,11 +86,11 @@ export default {
       columName: "",
       expressMatrix: [],
       dataSource: [],
-      importCount: 0,
+      importCount: 0
     };
   },
   created() {
-    this.expressMatrix = DEFAULT_EXPRESS;
+    this.expressMatrix = MAPPING_EXPRESS;
   },
   methods: {
     restart() {

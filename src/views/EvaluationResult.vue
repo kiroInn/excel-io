@@ -1,8 +1,12 @@
 <template>
   <div class="result-container">
     <div class="result-count">
-      <div>imported count: <b>{{importCount - 1}}</b></div>
-      <div>success count:<b>{{successCount}}</b></div>
+      <div>
+        imported count: <b>{{ importCount - 1 }}</b>
+      </div>
+      <div>
+        success count:<b>{{ successCount }}</b>
+      </div>
     </div>
     <div class="config">
       <input type="checkbox" id="isShowAll" v-model="isShowAll" />
@@ -74,8 +78,11 @@ export default {
         );
       }
     },
-    successCount(){
-      return _.get(_.union(_.map(this.dataArray, items => _.get(items, 1))), 'length');
+    successCount() {
+      return _.get(
+        _.union(_.map(this.dataArray, items => _.get(items, 1))),
+        "length"
+      );
     }
   },
   data() {
@@ -103,12 +110,12 @@ export default {
 .result-container {
   padding: 50px 50px;
   background-color: rgba(255, 255, 255, 0.8);
-  .result-count{
+  .result-count {
     display: flex;
     justify-content: center;
-    div{
+    div {
       margin: 6px;
-      b{
+      b {
         font-weight: 700;
       }
     }
