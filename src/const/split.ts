@@ -1,33 +1,87 @@
 export const DEFAULT_MAPPING = [
   {
-    templateName: "106470.xlsx",
+    templateName: "106900.xlsx",
     values: [
-      { from: "106470-Instructions", to: "Instructions", type: "sheet" },
-      { from: "106470-Reconciliation", to: "Reconciliation", type: "sheet" },
+      { from: "106900-Instructions", to: "Instructions", type: "sheet" },
+      { from: "106900-Reconciliation", to: "Reconciliation", type: "sheet" },
       {
-        from: "106470-Outstanding Checks",
+        from: "106900-Outstanding Checks",
         to: "Outstanding Checks",
         type: "sheet"
       },
       {
-        from: "106470-Deposits in Transit",
+        from: "106900-Deposits in Transit",
         to: "Deposits in Transit",
         type: "sheet"
       }
     ]
   },
   {
-    templateName: "106460.xlsx",
+    templateName: "106920.xlsx",
     values: [
-      { from: "106460-Instructions", to: "Instructions", type: "sheet" },
-      { from: "106460-Reconciliation", to: "Reconciliation", type: "sheet" },
+      { from: "106920-Instructions", to: "Instructions", type: "sheet" },
+      { from: "106920-Reconciliation", to: "Reconciliation", type: "sheet" },
       {
-        from: "106460-Outstanding Checks",
+        from: "106920-Outstanding Checks",
         to: "Outstanding Checks",
         type: "sheet"
       },
       {
-        from: "106460-Deposits in Transit",
+        from: "106920-Deposits in Transit",
+        to: "Deposits in Transit",
+        type: "sheet"
+      }
+    ]
+  },
+
+  {
+    templateName: "106970.xlsx",
+    values: [
+      { from: "106970-Instructions", to: "Instructions", type: "sheet" },
+      { from: "106970-Reconciliation", to: "Reconciliation", type: "sheet" },
+      {
+        from: "106970-Outstanding Checks",
+        to: "Outstanding Checks",
+        type: "sheet"
+      },
+      {
+        from: "106970-Deposits in Transit",
+        to: "Deposits in Transit",
+        type: "sheet"
+      }
+    ]
+  },
+
+  {
+    templateName: "106430.xlsx",
+    values: [
+      { from: "106430-Instructions", to: "Instructions", type: "sheet" },
+      { from: "106430-Reconciliation", to: "Reconciliation", type: "sheet" },
+      {
+        from: "106430-Outstanding Checks",
+        to: "Outstanding Checks",
+        type: "sheet"
+      },
+      {
+        from: "106430-Deposits in Transit",
+        to: "Deposits in Transit",
+        type: "sheet"
+      }
+    ]
+  },
+
+  {
+    templateName: "106440.xlsx",
+    values: [
+      { from: "106440-Instructions", to: "Instructions", type: "sheet" },
+      { from: "106440-Reconciliation", to: "Reconciliation", type: "sheet" },
+      {
+        from: "106440-Outstanding Checks",
+        to: "Outstanding Checks",
+        type: "sheet"
+      },
+      {
+        from: "106440-Deposits in Transit",
         to: "Deposits in Transit",
         type: "sheet"
       }
@@ -51,39 +105,40 @@ export const DEFAULT_MAPPING = [
     ]
   },
   {
-    templateName: "106440.xlsx",
+    templateName: "106460.xlsx",
     values: [
-      { from: "106440-Instructions", to: "Instructions", type: "sheet" },
-      { from: "106440-Reconciliation", to: "Reconciliation", type: "sheet" },
+      { from: "106460-Instructions", to: "Instructions", type: "sheet" },
+      { from: "106460-Reconciliation", to: "Reconciliation", type: "sheet" },
       {
-        from: "106440-Outstanding Checks",
+        from: "106460-Outstanding Checks",
         to: "Outstanding Checks",
         type: "sheet"
       },
       {
-        from: "106440-Deposits in Transit",
+        from: "106460-Deposits in Transit",
         to: "Deposits in Transit",
         type: "sheet"
       }
     ]
   },
   {
-    templateName: "106430.xlsx",
+    templateName: "106470.xlsx",
     values: [
-      { from: "106430-Instructions", to: "Instructions", type: "sheet" },
-      { from: "106430-Reconciliation", to: "Reconciliation", type: "sheet" },
+      { from: "106470-Instructions", to: "Instructions", type: "sheet" },
+      { from: "106470-Reconciliation", to: "Reconciliation", type: "sheet" },
       {
-        from: "106430-Outstanding Checks",
+        from: "106470-Outstanding Checks",
         to: "Outstanding Checks",
         type: "sheet"
       },
       {
-        from: "106430-Deposits in Transit",
+        from: "106470-Deposits in Transit",
         to: "Deposits in Transit",
         type: "sheet"
       }
     ]
   },
+
   {
     templateName: "106700.xlsx",
     values: [
@@ -261,21 +316,7 @@ export const DEFAULT_MAPPING = [
     values: [
       { from: "140000", to: "140000", type: "sheet" },
       { from: "140000-TB", to: "TB", type: "sheet" },
-      { from: "140000-1", to: "1", type: "sheet" },
-      { from: "140000-2", to: "2", type: "sheet" },
-      { from: "140000-3", to: "3", type: "sheet" },
-      { from: "140000-4", to: "4", type: "sheet" },
-      { from: "140000-5", to: "5", type: "sheet" },
-      { from: "140000-6", to: "6", type: "sheet" },
-      { from: "140000-7", to: "7", type: "sheet" },
-      { from: "140000-8", to: "8", type: "sheet" },
-      { from: "140000-9", to: "9", type: "sheet" },
-      { from: "140000-10", to: "10", type: "sheet" },
-      { from: "140000-11", to: "11", type: "sheet" },
-      { from: "140000-12", to: "12", type: "sheet" },
-      { from: "140000-13", to: "13", type: "sheet" },
-      { from: "140000-14", to: "14", type: "sheet" },
-      { from: "140000-15", to: "15", type: "sheet" }
+      { from: /140000-(\d+)/, type: "sheet-capture" }
     ]
   },
   {
@@ -283,7 +324,7 @@ export const DEFAULT_MAPPING = [
     values: [
       { from: "230000", to: "230000", type: "sheet" },
       { from: "230000-TB", to: "TB", type: "sheet" },
-      { from: "230000-2019", to: "2019", type: "sheet" },
+      { from: /230000-(\d+)/, type: "sheet-capture" },
       { from: "230000-Jan", to: "Jan", type: "sheet" },
       { from: "230000-Feb", to: "Feb", type: "sheet" },
       { from: "230000-Mar", to: "Mar", type: "sheet" },
@@ -367,8 +408,8 @@ export const DEFAULT_MAPPING = [
     values: [{ from: "897100", to: "897100", type: "sheet" }]
   },
   {
-    templateName: "897.xlsx",
-    values: [{ from: "897", to: "897", type: "sheet" }]
+    templateName: "897500.xlsx",
+    values: [{ from: "897500", to: "897500", type: "sheet" }]
   },
   {
     templateName: "897600.xlsx",

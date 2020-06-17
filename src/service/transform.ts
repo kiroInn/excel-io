@@ -7,6 +7,7 @@ export const CELL_VALUE_TYPE = {
   DATE: "date",
   STRING: "string",
   SHEET: "sheet",
+  SHEET_CAPTURE: "sheet-capture",
   VALUE: "value"
 };
 
@@ -69,19 +70,56 @@ export function fillData(
 ) {
   const values = _.get(mapping, "values");
   _.forEach(values, value => {
+    const type = _.get(value, "type");
+    if (type === CELL_VALUE_TYPE.SHEET_CAPTURE) {
+      const fromSheetNames: string[] = _.map(
+        _.get(from, "worksheets"),
+        sheet => sheet.name
+      );
+      const matchedSheets = _.filter(
+        fromSheetNames,
+        name => name && name.match(value.from)
+      );
+      _.each(matchedSheets, sheetName => {
+        sheetName = `${sheetName}`;
+        const fromSheet = from.getWorksheet(sheetName);
+        const toSheetName = _.get(sheetName.match(value.from), 1, "");
+        let toSheet = to.getWorksheet(toSheetName);
+        if (!toSheet) {
+          toSheet = to.addWorksheet(toSheetName);
+        }
+        toSheet.model = fromSheet.model;
+        toSheet.name = toSheetName;
+        _.each(fromSheet.getImages(), image => {
+          const fromImageId = Number(_.get(image, "imageId"));
+          const imageId = to.addImage({
+            buffer: from.getImage(fromImageId).buffer,
+            extension: "png"
+          });
+          toSheet.addImage(imageId, {
+            tl: {
+              col: Number(_.get(image, "range.tl.col")),
+              row: Number(_.get(image, "range.tl.row"))
+            },
+            br: {
+              col: Number(_.get(image, "range.br.col")),
+              row: Number(_.get(image, "range.br.row"))
+            }
+          });
+        });
+      });
+      return true;
+    }
     const fromSheet = from.getWorksheet(getCellSheet(_.get(value, "from")));
     if (fromSheet) {
-      let toSheet = to.getWorksheet(getCellSheet(_.get(value, "to")));
+      const toSheetName = getCellSheet(_.get(value, "to"));
+      let toSheet = to.getWorksheet(toSheetName);
       if (!toSheet) {
-        toSheet = to.addWorksheet(getCellSheet(_.get(value, "to")));
-      }
-      const type = _.get(value, "type");
-      if (type === CELL_VALUE_TYPE.VALUE) {
-        //todo
+        toSheet = to.addWorksheet(toSheetName);
       }
       if (type === CELL_VALUE_TYPE.SHEET) {
         toSheet.model = fromSheet.model;
-        toSheet.name = getCellSheet(_.get(value, "to"));
+        toSheet.name = toSheetName;
         _.each(fromSheet.getImages(), image => {
           const fromImageId = Number(_.get(image, "imageId"));
           const imageId = to.addImage({

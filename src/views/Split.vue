@@ -87,6 +87,11 @@
                 </td>
                 <td>
                   <select v-model="mapping.type">
+                    <option
+                      :selected="mapping.type === 'sheet-capture'"
+                      value="sheet-capture"
+                      >Sheet-Capture</option
+                    >
                     <option :selected="mapping.type === 'sheet'" value="sheet"
                       >Sheet</option
                     >
