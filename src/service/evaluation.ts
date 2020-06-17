@@ -71,7 +71,6 @@ export function parse(
         } catch (err) {
           console.error(`${sheetName} ${address} expression rule is err.`);
         }
-        if (sheetName === "200000") console.log("value：", value);
       }
       rowResult.push(value);
     });
