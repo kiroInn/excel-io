@@ -35,22 +35,6 @@ export function getUsingSheet(
   return Array.from(new Set(metaCells.map(getCellSheet)));
 }
 
-export function validateFrom(
-  workbook: Excel.Workbook,
-  mappings: Array<object>
-) {
-  const missingSheet: Array<string> = [];
-  const useSheets: Array<string> = getUsingSheet(mappings, "from");
-  useSheets.forEach(sheetName => {
-    if (!hasSheet(workbook, sheetName)) {
-      missingSheet.push(sheetName);
-    }
-  });
-  return missingSheet.length > 0
-    ? `from sheet ${missingSheet.join(",")} is not found`
-    : "";
-}
-
 interface Mapping {
   valuse: MappingValue[];
   templateName: string;
@@ -83,7 +67,7 @@ export function fillData(
       _.each(matchedSheets, sheetName => {
         sheetName = `${sheetName}`;
         const fromSheet = from.getWorksheet(sheetName);
-        const toSheetName = _.get(sheetName.match(value.from), 1, "");
+        const toSheetName = _.get(sheetName.match(new RegExp(value.from)), 1, "");
         let toSheet = to.getWorksheet(toSheetName);
         if (!toSheet) {
           toSheet = to.addWorksheet(toSheetName);

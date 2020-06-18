@@ -44,18 +44,12 @@
                 <th rowspan="2">operate</th>
               </tr>
               <tr>
-                <!-- <th>fromFile</th> -->
                 <td>destination</td>
                 <td>fileName</td>
               </tr>
             </thead>
             <tbody>
               <tr v-for="(mapping, index) in mappings" :key="index">
-                <!-- <td>
-                   <select v-model="mapping.fromFile">
-                     <option value="">选择文件</option>
-                  </select>
-                </td> -->
                 <td>
                   <input type="text" v-model="mapping.from" />
                 </td>
