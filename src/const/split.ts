@@ -1,31 +1,28 @@
 export const DEFAULT_MAPPING = [
   {
-    templateName: "106900.xlsx",
+    templateName: "106400.xlsx",
     values: [
-      { from: "106900-(.+)", type: "sheet-capture" },
+      { from: "106400-(.+)", type: "sheet-capture" },
     ]
   },
   {
-    templateName: "106920.xlsx",
+    templateName: "106410.xlsx",
     values: [
-      { from: "106920-(.+)", type: "sheet-capture" },
+      { from: "106410-(.+)", type: "sheet-capture" },
     ]
   },
-
   {
-    templateName: "106970.xlsx",
+    templateName: "106420.xlsx",
     values: [
-      { from: "106970-(.+)", type: "sheet-capture" },
+      { from: "106420-(.+)", type: "sheet-capture" },
     ]
   },
-
   {
     templateName: "106430.xlsx",
     values: [
       { from: "106430-(.+)", type: "sheet-capture" },
     ]
   },
-
   {
     templateName: "106440.xlsx",
     values: [
@@ -50,7 +47,12 @@ export const DEFAULT_MAPPING = [
       { from: "106470-(.+)", type: "sheet-capture" },
     ]
   },
-
+  {
+    templateName: "106600.xlsx",
+    values: [
+      { from: "106600-(.+)", type: "sheet-capture" },
+    ]
+  },
   {
     templateName: "106700.xlsx",
     values: [
@@ -67,6 +69,24 @@ export const DEFAULT_MAPPING = [
     templateName: "106750.xlsx",
     values: [
       { from: "106750-(.+)", type: "sheet-capture" },
+    ]
+  },
+  {
+    templateName: "106900.xlsx",
+    values: [
+      { from: "106900-(.+)", type: "sheet-capture" },
+    ]
+  },
+  {
+    templateName: "106920.xlsx",
+    values: [
+      { from: "106920-(.+)", type: "sheet-capture" },
+    ]
+  },
+  {
+    templateName: "106970.xlsx",
+    values: [
+      { from: "106970-(.+)", type: "sheet-capture" },
     ]
   },
   {
