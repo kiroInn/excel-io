@@ -8,6 +8,7 @@
 - sheetjs: https://github.com/SheetJS/sheetjs
 - jszip: https://stuk.github.io/jszip/
 - ui design: https://www.manypixels.co
+- test: https://testing-library.com/
   
 enhancement excel copy sheet
 exceljs.min.js: var c=e.drawing;s=t.media[o.imageId],  => var c=e.drawing;s=t.media[o.imageId]||{},
