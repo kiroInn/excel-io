@@ -164,7 +164,7 @@ import Modal from "@/components/modal";
 import * as Excel from "exceljs";
 import * as JSZip from "jszip";
 import { saveAs } from "file-saver";
-import { fillData } from "@/service/transform";
+import { fillData, eliminateFormula } from "@/service/transform";
 import { isXlsx } from "@/util/file";
 import { DEFAULT_MAPPING } from "@/const/split";
 import _ from "lodash";
@@ -284,6 +284,7 @@ export default {
       reader.onload = async () => {
         const fromWorkBook = new Excel.Workbook();
         await fromWorkBook.xlsx.load(reader.result);
+        eliminateFormula(fromWorkBook);
         mappings.forEach(mapping => {
           const toWorkbook = new Excel.Workbook();
           const resultWrokbook = fillData(fromWorkBook, toWorkbook, mapping);
