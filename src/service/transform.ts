@@ -153,7 +153,6 @@ export function eliminateFormula(workbook: Excel.Workbook) {
   workbook.eachSheet(sheet => {
     sheet.eachRow(row => {
       row.eachCell((cell) => {
-        console.log('before', cell.value);
         if(_.isObject(cell.value) && _.has(cell.value, 'result')){
           cell.value = _.get(cell, 'value.result');
         }
