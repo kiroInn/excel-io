@@ -1,7 +1,7 @@
 <div align="center">
 <h1>Excel IO</h1>
 
-
+<br />
 <a href="http://kiroinn.github.io/excelio">
   <img
     height="80"
@@ -11,8 +11,12 @@
   />
 </a>
 <br />
+<br />
 <p>excel io is excel productivity tool, support workbook split and collect any cell evaluation.</p>
 <br />
+
+[**Online Preview**][excelio]
+
 </div>
 <hr />
 
@@ -52,3 +56,8 @@ sed -i '' 's/c=e.drawing;s=t.media[o.imageId]/c=e.drawing;s=t.media[o.imageId]||
 ## License
 
 [MIT][license]
+
+<!-- prettier-ignore-start -->
+[excelio]: http://kiroinn.github.io/excelio
+[license]: https://github.com/kiroInn/excel-io/blob/master/LICENSE.MD
+<!-- prettier-ignore-end -->
