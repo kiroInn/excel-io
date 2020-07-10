@@ -4,7 +4,7 @@ import Split from "../views/Split.vue";
 
 Vue.use(VueRouter);
 
-const routes: Array<RouteConfig> = [
+export const routes: Array<RouteConfig> = [
   {
     path: "/",
     redirect: "/split"
