@@ -1,5 +1,6 @@
 # excel io
 online Excel productivity tool
+url: http://kiroinn.github.io/excelio
 
 ## Tech Stack
 - vue-cli
