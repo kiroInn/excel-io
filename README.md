@@ -1,6 +1,20 @@
-# Excel IO
-online Excel productivity tool  
-http://kiroinn.github.io/excelio
+<div align="center">
+<h1>Excel1 IO</h1>
+
+<br />
+
+<a href="http://kiroinn.github.io/excelio">
+  <img
+    height="80"
+    width="80"
+    alt="lizard"
+    src="https://raw.githubusercontent.com/kiroInn/excel-io/master/src/assets/logo.png"
+  />
+</a>
+
+<p>excel io is excel productivity tool, support workbook split and collect any cell evaluation.</p>
+
+</div>
 
 ## Tech Stack
 - vue-cli
@@ -12,10 +26,6 @@ http://kiroinn.github.io/excelio
 - testing-library
 - ui design: https://www.manypixels.co
   
-# Enhancement exceljs copy sheet
-exceljs.min.js
-var c=e.drawing;s=t.media[o.imageId],  => var c=e.drawing;s=t.media[o.imageId]||{},
-
 ## Project setup
 ```
 npm install
@@ -35,3 +45,10 @@ npm run build
 ```
 npm run lint
 ```
+
+## Enhancement exceljs copy sheet
+sed -i '' 's/c=e.drawing;s=t.media[o.imageId]/c=e.drawing;s=t.media[o.imageId]||{}/g' node_modules/exceljs/dist/exceljs.min.js
+
+## License
+
+[MIT][license]
