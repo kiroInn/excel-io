@@ -1,5 +1,5 @@
 <div align="center">
-<h1>Excel1 IO</h1>
+<h1>Excel IO</h1>
 
 <br />
 
@@ -13,8 +13,9 @@
 </a>
 
 <p>excel io is excel productivity tool, support workbook split and collect any cell evaluation.</p>
-
+<br />
 </div>
+<hr />
 
 ## Tech Stack
 - vue-cli
