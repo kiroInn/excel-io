@@ -1,7 +1,6 @@
 <div align="center">
 <h1>Excel IO</h1>
 
-<br />
 
 <a href="http://kiroinn.github.io/excelio">
   <img
@@ -11,7 +10,7 @@
     src="https://raw.githubusercontent.com/kiroInn/excel-io/master/src/assets/logo.png"
   />
 </a>
-
+<br />
 <p>excel io is excel productivity tool, support workbook split and collect any cell evaluation.</p>
 <br />
 </div>
