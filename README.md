@@ -1,4 +1,5 @@
 # excel io
+online Excel productivity tool
 
 ## Tech Stack
 - vue-cli
@@ -10,8 +11,10 @@
 - ui design: https://www.manypixels.co
 - test: https://testing-library.com/
   
-enhancement excel copy sheet
-exceljs.min.js: var c=e.drawing;s=t.media[o.imageId],  => var c=e.drawing;s=t.media[o.imageId]||{},
+# enhancement exceljs copy sheet
+
+exceljs.min.js
+var c=e.drawing;s=t.media[o.imageId],  => var c=e.drawing;s=t.media[o.imageId]||{},
 
 ## Project setup
 ```
