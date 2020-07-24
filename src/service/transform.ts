@@ -152,8 +152,12 @@ export function fillData(
 export function eliminateFormula(workbook: Excel.Workbook) {
   workbook.eachSheet(sheet => {
     sheet.eachRow(row => {
-      row.eachCell((cell) => {
-        if(_.isObject(cell.value) && _.has(cell.value, 'result')){
+      row.eachCell(cell => {
+        //  if(_.get(cell, 'type') === 6){
+        //   const {formula, result} = cell.value;
+        //   console.log(`sheetName:${cell._column._worksheet.name} || position:${cell._address} || formula:${formula} || result:${result}`, cell);
+        // }
+        if(_.get(cell, 'type') === 6){
           cell.value = _.get(cell, 'value.result');
         }
       })
