@@ -51,7 +51,8 @@ npm run lint
 ```
 
 ## Enhancement exceljs copy sheet
-sed -i '' 's/c=e.drawing;s=t.media[o.imageId]/c=e.drawing;s=t.media[o.imageId]||{}/g' node_modules/exceljs/dist/exceljs.min.js
+sed -i '' 's/c=e.drawing;s=t.media\[o.imageId\]/c=e.drawing;s=t.media\[o.imageId\]||{}/g' node_modules/exceljs/dist/exceljs.min.js
+sed -i '' 's/\,u\[c.rels.length\]=f\,/\,u\[c.rels.length\]=f\,s\&\&/g' node_modules/exceljs/dist/exceljs.min.js
 
 ## License
 

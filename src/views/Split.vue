@@ -84,20 +84,24 @@
                     <option
                       :selected="mapping.type === 'sheet-capture'"
                       value="sheet-capture"
-                      >Sheet-Capture</option
                     >
-                    <option :selected="mapping.type === 'sheet'" value="sheet"
-                      >Sheet</option
+                      Sheet-Capture
+                    </option>
+                    <option :selected="mapping.type === 'sheet'" value="sheet">
+                      Sheet
+                    </option>
+                    <option
+                      :selected="mapping.type === 'string'"
+                      value="string"
                     >
-                    <option :selected="mapping.type === 'string'" value="string"
-                      >String</option
-                    >
-                    <option :selected="mapping.type === 'date'" value="date"
-                      >Date</option
-                    >
-                    <option :selected="mapping.type === 'image'" value="image"
-                      >Image</option
-                    >
+                      String
+                    </option>
+                    <option :selected="mapping.type === 'date'" value="date">
+                      Date
+                    </option>
+                    <option :selected="mapping.type === 'image'" value="image">
+                      Image
+                    </option>
                   </select>
                 </td>
                 <td>
@@ -174,21 +178,21 @@ export default {
   name: "Split",
   components: {
     Loader,
-    Modal
+    Modal,
   },
   computed: {
     mappingsJSON: {
-      get: function() {
+      get: function () {
         return JSON.stringify(this.mappings);
       },
-      set: function(newValue) {
+      set: function (newValue) {
         try {
           this.mappings = JSON.parse(newValue);
         } catch (e) {
           console.error(e);
         }
-      }
-    }
+      },
+    },
   },
   created() {
     this.mappings = transformMappings(DEFAULT_MAPPING);
@@ -202,7 +206,7 @@ export default {
       isPrefixing: false,
       isJSON: false,
       files: [],
-      mappings: []
+      mappings: [],
     };
   },
   methods: {
@@ -214,8 +218,8 @@ export default {
         type: "string",
         range: {
           tl: { col: 0, row: 0 },
-          br: { col: 1, row: 1 }
-        }
+          br: { col: 1, row: 1 },
+        },
       });
     },
     removeMapping(deleteIndex) {
@@ -232,7 +236,7 @@ export default {
       if (filesLength > 0) {
         this.isLoading = true;
         const zip = new JSZip();
-        new Promise(resovle => {
+        new Promise((resovle) => {
           this.files.forEach(async ({ key }, index) => {
             const { fileName, blob } = await this.getFileEntity(key);
             zip.file(fileName, blob);
@@ -242,16 +246,17 @@ export default {
           .then(() => {
             return zip.generateAsync({ type: "blob" });
           })
-          .then(content => {
+          .then((content) => {
             const date = new Date();
             saveAs(
               content,
-              `excel-io-${date.getFullYear()}${date.getMonth() +
-                1}${date.getDate()}${date.getHours()}${date.getMinutes()}`
+              `excel-io-${date.getFullYear()}${
+                date.getMonth() + 1
+              }${date.getDate()}${date.getHours()}${date.getMinutes()}`
             );
             this.isLoading = false;
           })
-          .catch(err => {
+          .catch((err) => {
             console.error(err);
             this.message = "download failed";
             this.isLoading = false;
@@ -261,7 +266,7 @@ export default {
       }
     },
     async getFileEntity(key) {
-      const file = this.files.filter(f => f.key === key)[0];
+      const file = this.files.filter((f) => f.key === key)[0];
       const workbook = file.workbook;
       const buffer = await workbook.xlsx.writeBuffer();
       const fileType =
@@ -281,32 +286,36 @@ export default {
       const file = this.$refs.file.files[0];
       const reader = new FileReader();
       const mappings = reverseTransformMappings(this.mappings);
-      reader.onload = async () => {
-        const fromWorkBook = new Excel.Workbook();
-        await fromWorkBook.xlsx.load(reader.result);
-        eliminateFormula(fromWorkBook);
-        mappings.forEach(mapping => {
-          const toWorkbook = new Excel.Workbook();
-          const resultWrokbook = fillData(fromWorkBook, toWorkbook, mapping);
-          if (_.get(resultWrokbook, "worksheets.length", 0) > 0) {
-            this.files.push({
-              key: _.get(mapping, "templateName"),
-              name: _.get(mapping, "templateName"),
-              workbook: resultWrokbook,
-              buffer: resultWrokbook.xlsx.writeBuffer()
-            });
-          }
-        });
-        this.isLoading = false;
-      };
+      try {
+        reader.onload = async () => {
+          const fromWorkBook = new Excel.Workbook();
+          await fromWorkBook.xlsx.load(reader.result);
+          eliminateFormula(fromWorkBook);
+          mappings.forEach((mapping) => {
+            const toWorkbook = new Excel.Workbook();
+            const resultWrokbook = fillData(fromWorkBook, toWorkbook, mapping);
+            if (_.get(resultWrokbook, "worksheets.length", 0) > 0) {
+              this.files.push({
+                key: _.get(mapping, "templateName"),
+                name: _.get(mapping, "templateName"),
+                workbook: resultWrokbook,
+                buffer: resultWrokbook.xlsx.writeBuffer(),
+              });
+            }
+          });
+          this.isLoading = false;
+        };
+      } catch (err) {
+        console.log("error", err);
+      }
       if (isXlsx(file.name)) {
         reader.readAsArrayBuffer(file);
       } else {
         this.message = "File type is not supported";
         this.isLoading = false;
       }
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped lang="less">
