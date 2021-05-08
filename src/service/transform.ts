@@ -11,9 +11,9 @@ export const CELL_VALUE_TYPE = {
   VALUE: "value"
 };
 
-function hasSheet(workbook: Excel.Workbook, sheetName: string) {
-  return workbook && workbook.getWorksheet(sheetName);
-}
+// function hasSheet(workbook: Excel.Workbook, sheetName: string) {
+//   return workbook && workbook.getWorksheet(sheetName);
+// }
 
 function getCellSheet(mp: string): string {
   return mp.split(":").length === 2 ? mp.split(":")[0] : mp;
@@ -72,7 +72,9 @@ export function fillData(
         if (!toSheet) {
           toSheet = to.addWorksheet(toSheetName);
         }
-        toSheet.model = fromSheet.model;
+        toSheet.model = Object.assign(fromSheet.model, {
+          mergeCells: _.get(fromSheet, 'model.merges'),
+        });
         toSheet.name = toSheetName;
         _.each(fromSheet.getImages(), image => {
           const fromImageId = Number(_.get(image, "imageId"));
@@ -102,7 +104,9 @@ export function fillData(
         toSheet = to.addWorksheet(toSheetName);
       }
       if (type === CELL_VALUE_TYPE.SHEET) {
-        toSheet.model = fromSheet.model;
+        toSheet.model = Object.assign(fromSheet.model, {
+          mergeCells: _.get(fromSheet, 'model.merges'),
+        });
         toSheet.name = toSheetName;
         _.each(fromSheet.getImages(), image => {
           const fromImageId = Number(_.get(image, "imageId"));
@@ -151,8 +155,8 @@ export function fillData(
 
 export function eliminateFormula(workbook: Excel.Workbook) {
   workbook.eachSheet(sheet => {
-    sheet.eachRow(row => {
-      row.eachCell(cell => {
+    sheet.eachRow({ includeEmpty: false }, row => {
+      row.eachCell({ includeEmpty: false }, cell => {
         //  if(_.get(cell, 'type') === 6){
         //   const {formula, result} = cell.value;
         //   console.log(`sheetName:${cell._column._worksheet.name} || position:${cell._address} || formula:${formula} || result:${result}`, cell);
